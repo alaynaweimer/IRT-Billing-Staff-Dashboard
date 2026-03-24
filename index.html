@@ -1,628 +1,946 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRT Billing Staff Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #06060a; color: #e2e8f0; min-height: 100vh; padding: 16px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IRT Billing Staff Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── GLOBAL ── */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#06060a;color:#e2e8f0;min-height:100vh;padding:16px;}
 
-        .frame {
-            border: 3px solid #0ea5e9;
-            border-radius: 20px;
-            overflow: hidden;
-            background: #0a0a0f;
-            box-shadow: 0 0 0 4px rgba(14,165,233,0.25), 0 0 60px rgba(14,165,233,0.3), inset 0 0 0 1px rgba(14,165,233,0.1), 0 8px 40px rgba(0,0,0,0.6);
-        }
-        .frame-header {
-            background: linear-gradient(135deg, #12121a 0%, #0a1520 100%);
-            border-bottom: 1px solid #1e1e2e;
-            padding: 14px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .frame-brand { display: flex; align-items: center; gap: 12px; }
-        .frame-brand .org { font-size: 13px; font-weight: 700; color: #0ea5e9; letter-spacing: 0.5px; text-transform: uppercase; }
-        .frame-brand .divider { width: 1px; height: 16px; background: #2d2d3d; }
-        .frame-brand .name { font-size: 13px; color: #64748b; }
-        .frame-meta { display: flex; align-items: center; gap: 16px; }
-        .frame-sync { font-size: 11px; color: #4b5563; }
-        .frame-sync span { color: #10b981; font-weight: 600; }
-        .frame-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:0.4;} }
+/* ── FRAME ── */
+.frame{border:3px solid #0ea5e9;border-radius:20px;overflow:hidden;background:#0a0a0f;box-shadow:0 0 0 4px rgba(14,165,233,0.25),0 0 60px rgba(14,165,233,0.3),inset 0 0 0 1px rgba(14,165,233,0.1),0 8px 40px rgba(0,0,0,0.6);}
+.frame-header{background:linear-gradient(135deg,#12121a 0%,#0a1520 100%);border-bottom:1px solid #1e1e2e;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.frame-brand{display:flex;align-items:center;gap:12px;}
+.frame-brand .org{font-size:13px;font-weight:700;color:#0ea5e9;letter-spacing:0.5px;text-transform:uppercase;}
+.frame-brand .divider{width:1px;height:16px;background:#2d2d3d;}
+.frame-brand .name{font-size:13px;color:#64748b;}
+.frame-meta{display:flex;align-items:center;gap:16px;}
+.frame-sync{font-size:11px;color:#4b5563;}
+.frame-sync span{color:#10b981;font-weight:600;}
+.frame-dot{width:8px;height:8px;border-radius:50%;background:#10b981;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
 
-        .dashboard { padding: 24px; max-width: 1400px; margin: 0 auto; }
+/* ── TAB SWITCHER ── */
+.tab-bar{display:flex;gap:0;border-bottom:1px solid #1e1e2e;background:#0a0a0f;padding:0 24px;}
+.tab-btn{padding:12px 20px;font-size:13px;font-weight:500;color:#64748b;cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all 0.15s;font-family:'Inter',sans-serif;}
+.tab-btn:hover{color:#e2e8f0;}
+.tab-btn.active{color:#f97316;border-bottom-color:#f97316;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
 
-        .header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #1e1e2e;
-            flex-wrap: wrap; gap: 16px;
-        }
-        .header-left h1 {
-            font-size: 24px; font-weight: 700;
-            background: linear-gradient(135deg, #f97316, #ef4444);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        .header-left p { color: #64748b; font-size: 14px; margin-top: 4px; }
-        .header-right { display: flex; gap: 12px; align-items: center; }
-        .btn { padding: 10px 16px; background: #12121a; border: 1px solid #2d2d3d; border-radius: 8px; color: #94a3b8; font-size: 13px; cursor: pointer; }
-        .btn:hover { border-color: #f97316; color: #f97316; }
-        .last-updated { font-size: 12px; color: #4b5563; }
+/* ── DASHBOARD STYLES ── */
+.dashboard{padding:24px;max-width:1400px;margin:0 auto;}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #1e1e2e;flex-wrap:wrap;gap:16px;}
+.header-left h1{font-size:24px;font-weight:700;background:linear-gradient(135deg,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.header-left p{color:#64748b;font-size:14px;margin-top:4px;}
+.header-right{display:flex;gap:12px;align-items:center;}
+.btn{padding:10px 16px;background:#12121a;border:1px solid #2d2d3d;border-radius:8px;color:#94a3b8;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn:hover{border-color:#f97316;color:#f97316;}
+.last-updated{font-size:12px;color:#4b5563;}
+.priority-banner{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px;}
+.priority-card{background:#12121a;border-radius:12px;padding:16px;border-left:4px solid #1e1e2e;}
+.priority-card.urgent{border-left-color:#ef4444;}.priority-card.high{border-left-color:#f97316;}.priority-card.medium{border-left-color:#f59e0b;}.priority-card.info{border-left-color:#3b82f6;}.priority-card.teal{border-left-color:#14b8a6;}
+.priority-card .label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.priority-card .value{font-size:26px;font-weight:700;font-family:monospace;}
+.priority-card.urgent .value{color:#ef4444;}.priority-card.high .value{color:#f97316;}.priority-card.medium .value{color:#f59e0b;}.priority-card.info .value{color:#3b82f6;}.priority-card.teal .value{color:#14b8a6;}
+.priority-card .sub{font-size:11px;color:#4b5563;margin-top:4px;}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px;margin-bottom:24px;}
+.stat-tile{background:#12121a;border:1px solid #1e1e2e;border-radius:12px;overflow:hidden;}
+.stat-tile-header{padding:14px 18px;border-bottom:1px solid #1e1e2e;background:#0a0a0f;font-size:14px;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+.tile-badge{font-size:11px;font-weight:700;font-family:monospace;padding:3px 8px;border-radius:10px;}
+.tile-badge.red{background:rgba(239,68,68,0.15);color:#ef4444;}.tile-badge.yellow{background:rgba(245,158,11,0.15);color:#f59e0b;}.tile-badge.teal{background:rgba(20,184,166,0.15);color:#14b8a6;}.tile-badge.green{background:rgba(16,185,129,0.15);color:#10b981;}.tile-badge.gray{background:rgba(100,116,139,0.15);color:#64748b;}
+.stat-tile-content{padding:20px;}
+.big-number{font-size:32px;font-weight:700;font-family:monospace;margin-bottom:4px;}
+.big-number.red{color:#ef4444;}.big-number.green{color:#10b981;}.big-number.yellow{color:#f59e0b;}.big-number.orange{color:#f97316;}.big-number.teal{color:#14b8a6;}.big-number.blue{color:#3b82f6;}
+.stat-detail{font-size:13px;color:#64748b;margin-bottom:16px;}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #1e1e2e;}
+.stat-row:last-child{border-bottom:none;}
+.stat-row .label{font-size:13px;color:#94a3b8;}
+.stat-row .value{font-size:15px;font-weight:600;font-family:monospace;}
+.stat-row .value.red{color:#ef4444;}.stat-row .value.green{color:#10b981;}.stat-row .value.yellow{color:#f59e0b;}.stat-row .value.orange{color:#f97316;}.stat-row .value.teal{color:#14b8a6;}.stat-row .value.blue{color:#3b82f6;}
+.task-item{padding:10px 12px;background:#0a0a0f;border-radius:8px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;border-left:3px solid #1e1e2e;}
+.task-item.high{border-left-color:#ef4444;}.task-item.medium{border-left-color:#f59e0b;}
+.task-item .task-info{flex:1;}
+.task-item .task-name{font-size:12px;color:#e2e8f0;font-weight:500;}
+.task-item .task-meta{font-size:11px;color:#64748b;margin-top:2px;}
+.badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;margin-left:6px;}
+.badge.todo{background:rgba(239,68,68,0.15);color:#ef4444;}.badge.inprog{background:rgba(59,130,246,0.15);color:#3b82f6;}.badge.review{background:rgba(245,158,11,0.15);color:#f59e0b;}
+.metric-bar{margin:8px 0;}
+.metric-bar-label{display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;}
+.metric-bar-label span:first-child{color:#94a3b8;}
+.metric-bar-label span:last-child{font-weight:600;font-family:monospace;}
+.metric-bar-track{background:#1e1e2e;border-radius:4px;height:6px;}
+.metric-bar-fill{height:100%;border-radius:4px;transition:width 0.5s;}
+.metric-bar-fill.green{background:#10b981;}.metric-bar-fill.yellow{background:#f59e0b;}.metric-bar-fill.red{background:#ef4444;}
+.progress-wrap{margin-bottom:16px;}
+.progress-label{display:flex;justify-content:space-between;margin-bottom:6px;}
+.progress-label span:first-child{font-size:12px;color:#94a3b8;}
+.progress-label span:last-child{font-size:13px;font-weight:600;color:#10b981;}
+.progress-bar-bg{background:#1e1e2e;border-radius:4px;height:8px;overflow:hidden;}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#10b981,#059669);width:0%;transition:width 0.6s;border-radius:4px;}
+.checklist-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #1e1e2e;}
+.checklist-item:last-child{border-bottom:none;}
+.check-icon{font-size:14px;margin-top:1px;flex-shrink:0;}
+.check-text{font-size:12px;color:#94a3b8;flex:1;}
+.check-value{font-size:13px;font-weight:600;font-family:monospace;white-space:nowrap;}
+.footer{text-align:center;margin-top:24px;padding-top:16px;border-top:1px solid #1e1e2e;color:#4b5563;font-size:12px;}
+.loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,15,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;}
+.loading-overlay.hidden{display:none;}
+.spinner{width:48px;height:48px;border:3px solid #1e1e2e;border-top-color:#f97316;border-radius:50%;animation:spin 1s linear infinite;}
+.loading-text{margin-top:16px;color:#64748b;font-size:14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.error-msg{background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:16px;margin-bottom:20px;color:#ef4444;font-size:13px;display:none;}
 
-        .priority-banner { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
-        .priority-card { background: #12121a; border-radius: 12px; padding: 16px; border-left: 4px solid #1e1e2e; }
-        .priority-card.urgent { border-left-color: #ef4444; }
-        .priority-card.high   { border-left-color: #f97316; }
-        .priority-card.medium { border-left-color: #f59e0b; }
-        .priority-card.info   { border-left-color: #3b82f6; }
-        .priority-card.teal   { border-left-color: #14b8a6; }
-        .priority-card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-        .priority-card .value { font-size: 26px; font-weight: 700; font-family: monospace; }
-        .priority-card.urgent .value { color: #ef4444; }
-        .priority-card.high   .value { color: #f97316; }
-        .priority-card.medium .value { color: #f59e0b; }
-        .priority-card.info   .value { color: #3b82f6; }
-        .priority-card.teal   .value { color: #14b8a6; }
-        .priority-card .sub { font-size: 11px; color: #4b5563; margin-top: 4px; }
+/* ── WORK QUEUE STYLES ── */
+:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a2e;--border:#1e1e2e;--text:#e2e8f0;--muted:#64748b;--blue:#58a6ff;--green:#10b981;--yellow:#f59e0b;--orange:#f97316;--red:#ef4444;--purple:#a855f7;}
+.wq{padding:24px;max-width:1400px;margin:0 auto;}
+.wq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
+.wq-header h2{font-size:20px;font-weight:600;}
+.wq-header p{font-size:12px;color:var(--muted);margin-top:2px;}
+.live-badge{padding:3px 10px;border-radius:20px;font-size:11px;font-family:'DM Mono',monospace;background:rgba(16,185,129,0.15);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.loading-bar{height:3px;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;margin-bottom:14px;animation:wqpulse 1.5s ease-in-out infinite;}
+@keyframes wqpulse{0%,100%{opacity:0.4;}50%{opacity:1;}}
+.loading-bar.hidden{display:none;}
+.ref-panel{background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--blue);border-radius:10px;padding:14px 18px;margin-bottom:14px;}
+.ref-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.ref-title{font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:0.8px;}
+.payer-select{padding:5px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:'Inter',sans-serif;cursor:pointer;}
+.ref-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;}
+.ref-item label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px;}
+.ref-item span{font-size:12px;font-family:'DM Mono',monospace;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ref-item span.rlink{color:var(--blue);cursor:pointer;}
+.wq-blocks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.wq-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;cursor:pointer;transition:all 0.15s;position:relative;overflow:hidden;}
+.wq-block::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:10px 10px 0 0;}
+.wq-block.wq-claims::before{background:var(--blue);}.wq-block.wq-invoices::before{background:var(--yellow);}.wq-block.wq-auths::before{background:var(--green);}.wq-block.wq-kpis::before{background:var(--purple);}
+.wq-block:hover{border-color:var(--muted);transform:translateY(-1px);}
+.wq-block.active.wq-claims{border-color:var(--blue);background:rgba(88,166,255,0.06);}
+.wq-block.active.wq-invoices{border-color:var(--yellow);background:rgba(245,158,11,0.06);}
+.wq-block.active.wq-auths{border-color:var(--green);background:rgba(16,185,129,0.06);}
+.wq-block.active.wq-kpis{border-color:var(--purple);background:rgba(168,85,247,0.06);}
+.wq-block .bicon{font-size:20px;margin-bottom:8px;}
+.wq-block .blabel{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;}
+.wq-block .bvalue{font-size:26px;font-weight:600;font-family:'DM Mono',monospace;}
+.bv-blue{color:var(--blue);}.bv-yellow{color:var(--yellow);}.bv-green{color:var(--green);}.bv-purple{color:var(--purple);}
+.wq-block .bsub{font-size:11px;color:var(--muted);margin-top:3px;}
+.bflags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
+.chip{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;font-family:'DM Mono',monospace;}
+.ch-red{background:rgba(239,68,68,0.15);color:var(--red);}.ch-yellow{background:rgba(245,158,11,0.15);color:var(--yellow);}.ch-orange{background:rgba(249,115,22,0.15);color:var(--orange);}.ch-blue{background:rgba(88,166,255,0.15);color:var(--blue);}.ch-purple{background:rgba(168,85,247,0.15);color:var(--purple);}.ch-green{background:rgba(16,185,129,0.15);color:var(--green);}
+.wq-panel{display:none;}.wq-panel.active{display:block;}
+.buckets{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+.bucket{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px;cursor:pointer;transition:all 0.15s;}
+.bucket:hover{border-color:var(--muted);}
+.bucket.active{border-color:var(--blue);background:rgba(88,166,255,0.06);}
+.bucket-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;}
+.bucket-name{font-size:13px;font-weight:500;}
+.bucket-count{font-size:24px;font-weight:600;font-family:'DM Mono',monospace;}
+.bc-red{color:var(--red);}.bc-yellow{color:var(--yellow);}.bc-orange{color:var(--orange);}.bc-blue{color:var(--blue);}.bc-purple{color:var(--purple);}
+.bucket-rule{font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:6px;}
+.bucket-alert{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;display:inline-block;}
+.ba-red{background:rgba(239,68,68,0.12);color:var(--red);}.ba-yellow{background:rgba(245,158,11,0.12);color:var(--yellow);}.ba-orange{background:rgba(249,115,22,0.12);color:var(--orange);}.ba-green{background:rgba(16,185,129,0.12);color:var(--green);}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:none;}
+.table-wrap.active{display:block;}
+.th,.tr{display:grid;grid-template-columns:85px 70px 55px 1fr 110px 75px 75px 80px 70px 100px;padding:9px 14px;gap:0;align-items:center;}
+.th{background:var(--surface2);border-bottom:1px solid var(--border);font-size:10px;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.5px;font-family:'DM Mono',monospace;}
+.tr{border-bottom:1px solid var(--border);font-size:12px;transition:background 0.1s;cursor:pointer;}
+.tr:last-child{border-bottom:none;}
+.tr:hover{background:var(--surface2);}
+.tr.flagged{border-left:3px solid var(--red);}.tr.warning{border-left:3px solid var(--yellow);}.tr.ok{border-left:3px solid var(--green);}
+.mono{font-family:'DM Mono',monospace;}
+.c-blue{color:var(--blue);}.c-red{color:var(--red);}.c-yellow{color:var(--yellow);}.c-green{color:var(--green);}.c-muted{color:var(--muted);}
+.pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;font-family:'DM Mono',monospace;}
+.p-blue{background:rgba(88,166,255,0.15);color:var(--blue);}.p-yellow{background:rgba(245,158,11,0.15);color:var(--yellow);}.p-red{background:rgba(239,68,68,0.15);color:var(--red);}.p-purple{background:rgba(168,85,247,0.15);color:var(--purple);}.p-green{background:rgba(16,185,129,0.15);color:var(--green);}
+.tag-lead{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-family:'DM Mono',monospace;background:rgba(239,68,68,0.12);color:var(--red);}
+.tag-watch{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-family:'DM Mono',monospace;background:rgba(245,158,11,0.12);color:var(--yellow);}
+.tag-ok{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-family:'DM Mono',monospace;background:rgba(16,185,129,0.12);color:var(--green);}
+.note-btn{padding:3px 10px;background:transparent;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:11px;cursor:pointer;transition:all 0.1s;font-family:'Inter',sans-serif;}
+.note-btn:hover{border-color:var(--blue);color:var(--blue);}
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);}
+.page-btns{display:flex;gap:6px;}
+.page-btn{padding:4px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;color:var(--text);font-size:11px;cursor:pointer;font-family:'Inter',sans-serif;}
+.page-btn:hover{border-color:var(--blue);color:var(--blue);}
+.page-btn:disabled{opacity:0.3;cursor:not-allowed;}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.kpi-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;}
+.kpi-value{font-size:28px;font-weight:600;font-family:'DM Mono',monospace;}
+.kpi-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+.kpi-trend{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:4px;font-size:11px;font-family:'DM Mono',monospace;}
+.t-up{background:rgba(16,185,129,0.12);color:var(--green);}.t-down{background:rgba(239,68,68,0.12);color:var(--red);}
+.search-row{display:flex;gap:10px;margin-bottom:12px;align-items:center;}
+.search-input{flex:1;padding:8px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif;}
+.search-input:focus{outline:none;border-color:var(--blue);}
+.filter-select{padding:7px 10px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;font-family:'Inter',sans-serif;}
+.wq-error{background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:12px 16px;margin-bottom:14px;color:var(--red);font-size:13px;display:none;}
+.empty-state{text-align:center;padding:40px;color:var(--muted);font-size:14px;}
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 24px; }
-        .stat-tile { background: #12121a; border: 1px solid #1e1e2e; border-radius: 12px; overflow: hidden; }
-        .stat-tile-header { padding: 14px 18px; border-bottom: 1px solid #1e1e2e; background: #0a0a0f; font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
-        .tile-badge { font-size: 11px; font-weight: 700; font-family: monospace; padding: 3px 8px; border-radius: 10px; }
-        .tile-badge.red    { background: rgba(239,68,68,0.15);  color: #ef4444; }
-        .tile-badge.yellow { background: rgba(245,158,11,0.15); color: #f59e0b; }
-        .tile-badge.teal   { background: rgba(20,184,166,0.15); color: #14b8a6; }
-        .tile-badge.green  { background: rgba(16,185,129,0.15); color: #10b981; }
-        .tile-badge.gray   { background: rgba(100,116,139,0.15);color: #64748b; }
-        .stat-tile-content { padding: 20px; }
-
-        .big-number { font-size: 32px; font-weight: 700; font-family: monospace; margin-bottom: 4px; }
-        .big-number.red    { color: #ef4444; } .big-number.green  { color: #10b981; }
-        .big-number.yellow { color: #f59e0b; } .big-number.orange { color: #f97316; }
-        .big-number.teal   { color: #14b8a6; } .big-number.blue   { color: #3b82f6; }
-
-        .stat-detail { font-size: 13px; color: #64748b; margin-bottom: 16px; }
-        .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1e1e2e; }
-        .stat-row:last-child { border-bottom: none; }
-        .stat-row .label { font-size: 13px; color: #94a3b8; }
-        .stat-row .value { font-size: 15px; font-weight: 600; font-family: monospace; }
-        .stat-row .value.red    { color: #ef4444; } .stat-row .value.green  { color: #10b981; }
-        .stat-row .value.yellow { color: #f59e0b; } .stat-row .value.orange { color: #f97316; }
-        .stat-row .value.teal   { color: #14b8a6; } .stat-row .value.blue   { color: #3b82f6; }
-
-        .task-item { padding: 10px 12px; background: #0a0a0f; border-radius: 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #1e1e2e; }
-        .task-item.high   { border-left-color: #ef4444; }
-        .task-item.medium { border-left-color: #f59e0b; }
-        .task-item .task-info { flex: 1; }
-        .task-item .task-name { font-size: 12px; color: #e2e8f0; font-weight: 500; }
-        .task-item .task-meta { font-size: 11px; color: #64748b; margin-top: 2px; }
-        .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-left: 6px; }
-        .badge.todo   { background: rgba(239,68,68,0.15);  color: #ef4444; }
-        .badge.inprog { background: rgba(59,130,246,0.15); color: #3b82f6; }
-        .badge.review { background: rgba(245,158,11,0.15); color: #f59e0b; }
-
-        .metric-bar { margin: 8px 0; }
-        .metric-bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
-        .metric-bar-label span:first-child { color: #94a3b8; }
-        .metric-bar-label span:last-child  { font-weight: 600; font-family: monospace; }
-        .metric-bar-track { background: #1e1e2e; border-radius: 4px; height: 6px; }
-        .metric-bar-fill  { height: 100%; border-radius: 4px; transition: width 0.5s; }
-        .metric-bar-fill.green  { background: #10b981; }
-        .metric-bar-fill.yellow { background: #f59e0b; }
-        .metric-bar-fill.red    { background: #ef4444; }
-
-        .progress-wrap { margin-bottom: 16px; }
-        .progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; }
-        .progress-label span:first-child { font-size: 12px; color: #94a3b8; }
-        .progress-label span:last-child  { font-size: 13px; font-weight: 600; color: #10b981; }
-        .progress-bar-bg   { background: #1e1e2e; border-radius: 4px; height: 8px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg,#10b981,#059669); width: 0%; transition: width 0.6s; border-radius: 4px; }
-
-        .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1e1e2e; }
-        .checklist-item:last-child { border-bottom: none; }
-        .check-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
-        .check-text { font-size: 12px; color: #94a3b8; flex: 1; }
-        .check-value { font-size: 13px; font-weight: 600; font-family: monospace; white-space: nowrap; }
-
-        .footer { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #1e1e2e; color: #4b5563; font-size: 12px; }
-        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,10,15,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
-        .loading-overlay.hidden { display: none; }
-        .spinner { width: 48px; height: 48px; border: 3px solid #1e1e2e; border-top-color: #f97316; border-radius: 50%; animation: spin 1s linear infinite; }
-        .loading-text { margin-top: 16px; color: #64748b; font-size: 14px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .error-msg { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); border-radius: 8px; padding: 16px; margin-bottom: 20px; color: #ef4444; font-size: 13px; display: none; }
-    </style>
+/* ── MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;align-items:center;justify-content:center;}
+.overlay.active{display:flex;}
+.modal{background:#12121a;border:1px solid #1e1e2e;border-radius:12px;width:600px;max-height:90vh;overflow-y:auto;padding:24px;}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:3px;}
+.modal-sub{font-size:12px;color:#64748b;margin-bottom:16px;}
+.modal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;background:#0a0a0f;border-radius:8px;padding:14px;margin-bottom:14px;}
+.info-item label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:2px;}
+.info-item span{font-size:12px;font-family:'DM Mono',monospace;}
+.sec-label{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;font-weight:500;}
+.note-entry{padding:10px 12px;background:#0a0a0f;border-radius:6px;margin-bottom:8px;font-size:12px;border-left:3px solid #1e1e2e;}
+.note-entry.fresh{border-left-color:#58a6ff;}
+.note-meta{font-size:10px;color:#64748b;margin-bottom:3px;font-family:'DM Mono',monospace;}
+.notes-history{max-height:150px;overflow-y:auto;margin-bottom:14px;}
+.note-input{width:100%;background:#0a0a0f;border:1px solid #1e1e2e;border-radius:8px;padding:12px;color:#e2e8f0;font-size:13px;font-family:'Inter',sans-serif;resize:vertical;min-height:70px;margin-bottom:12px;}
+.note-input:focus{outline:none;border-color:#58a6ff;}
+.modal-actions{display:flex;justify-content:space-between;align-items:center;}
+.modal-btns{display:flex;gap:8px;}
+.btn-esc{padding:7px 14px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);border-radius:6px;color:#ef4444;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-save{padding:7px 18px;background:#58a6ff;border:none;border-radius:6px;color:#000;font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;}
+.btn-cancel{padding:7px 14px;background:transparent;border:1px solid #1e1e2e;border-radius:6px;color:#64748b;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;}
+.esc-msg{display:none;margin-top:10px;padding:8px 12px;background:rgba(239,68,68,0.1);border-radius:6px;color:#ef4444;font-size:12px;}
+</style>
 </head>
 <body>
-    <div class="frame">
-        <div class="frame-header">
-            <div class="frame-brand">
-                <span class="org">In Reach Therapy</span>
-                <div class="divider"></div>
-                <span class="name">Billing Staff Dashboard</span>
-            </div>
-            <div class="frame-meta">
-                <div class="frame-dot"></div>
-                <span class="frame-sync">Last synced: <span id="frameSyncTime">—</span></span>
-            </div>
+<div class="frame">
+  <!-- FRAME HEADER -->
+  <div class="frame-header">
+    <div class="frame-brand">
+      <span class="org">In Reach Therapy</span>
+      <div class="divider"></div>
+      <span class="name">Billing Staff Dashboard</span>
+    </div>
+    <div class="frame-meta">
+      <div class="frame-dot"></div>
+      <span class="frame-sync">Last synced: <span id="frameSyncTime">—</span></span>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('workqueue',this)">⚙️ Work Queue</button>
+  </div>
+
+  <!-- ═══════════════ TAB 1: DASHBOARD ═══════════════ -->
+  <div class="tab-content active" id="tab-dashboard">
+    <div class="dashboard">
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading follow-up items...</div>
+      </div>
+      <div class="header">
+        <div class="header-left">
+          <h1>📋 IRT Billing Staff Dashboard</h1>
+          <p>In Reach Therapy • Billing Follow-Up & Action Items</p>
         </div>
-
-        <div class="dashboard">
-        <div class="loading-overlay" id="loadingOverlay">
-            <div class="spinner"></div>
-            <div class="loading-text">Loading follow-up items...</div>
+        <div class="header-right">
+          <button class="btn" onclick="loadDashboardData()">↻ Refresh</button>
+          <span class="last-updated" id="lastUpdated"></span>
         </div>
-
-        <div class="header">
-            <div class="header-left">
-                <h1>📋 IRT Billing Staff Dashboard</h1>
-                <p>In Reach Therapy • Billing Follow-Up & Action Items</p>
-            </div>
-            <div class="header-right">
-                <button class="btn" onclick="loadAllData()">↻ Refresh</button>
-                <span class="last-updated" id="lastUpdated"></span>
-            </div>
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="priority-banner">
+        <div class="priority-card urgent"><div class="label">🚨 High Priority Tasks</div><div class="value" id="bannerUrgent">-</div><div class="sub">Need action today</div></div>
+        <div class="priority-card high"><div class="label">❌ Denied Claims</div><div class="value" id="bannerDenied">-</div><div class="sub">Appeal / resubmit needed</div></div>
+        <div class="priority-card teal"><div class="label">💰 OHP to Bill</div><div class="value" id="bannerOHP">-</div><div class="sub" id="bannerOHPAmt">Loading...</div></div>
+        <div class="priority-card medium"><div class="label">📄 Past Due Invoices</div><div class="value" id="bannerPastDue">-</div><div class="sub">Patient follow-up needed</div></div>
+        <div class="priority-card info"><div class="label">⏰ Late Invoicing</div><div class="value" id="bannerLateInvoicing">-</div><div class="sub">Invoiced 7+ days after service</div></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-tile">
+          <div class="stat-tile-header">✅ Daily Checklist<span class="tile-badge gray">data-driven</span></div>
+          <div class="stat-tile-content">
+            <div class="stat-detail">Flags based on live data — not self-reported</div>
+            <div class="checklist-item"><span class="check-icon" id="checkDeniedIcon">⚠️</span><span class="check-text">Denied claims needing appeal/resubmit</span><span class="check-value red" id="checkDenied">0</span></div>
+            <div class="checklist-item"><span class="check-icon" id="checkOHPIcon">⚠️</span><span class="check-text">BILL OHP tasks outstanding</span><span class="check-value teal" id="checkOHP">0</span></div>
+            <div class="checklist-item"><span class="check-icon" id="checkPastDueIcon">⚠️</span><span class="check-text">Past due patient invoices</span><span class="check-value yellow" id="checkPastDue">0</span></div>
+            <div class="checklist-item"><span class="check-icon" id="checkLateIcon">⚠️</span><span class="check-text">Invoices created 7+ days after service</span><span class="check-value orange" id="checkLate">0</span></div>
+            <div class="checklist-item"><span class="check-icon" id="check90Icon">⚠️</span><span class="check-text">Claims 90+ days outstanding</span><span class="check-value red" id="check90">0</span></div>
+            <div class="checklist-item"><span class="check-icon" id="checkUnreviewedIcon">⚠️</span><span class="check-text">Unreviewed claims</span><span class="check-value orange" id="checkUnreviewed">0</span></div>
+          </div>
         </div>
-
-        <div class="error-msg" id="errorMsg"></div>
-
-        <!-- PRIORITY BANNER -->
-        <div class="priority-banner">
-            <div class="priority-card urgent">
-                <div class="label">🚨 High Priority Tasks</div>
-                <div class="value" id="bannerUrgent">-</div>
-                <div class="sub">Need action today</div>
-            </div>
-            <div class="priority-card high">
-                <div class="label">❌ Denied Claims</div>
-                <div class="value" id="bannerDenied">-</div>
-                <div class="sub">Appeal / resubmit needed</div>
-            </div>
-            <div class="priority-card teal">
-                <div class="label">💰 OHP to Bill</div>
-                <div class="value" id="bannerOHP">-</div>
-                <div class="sub" id="bannerOHPAmt">Loading...</div>
-            </div>
-            <div class="priority-card medium">
-                <div class="label">📄 Past Due Invoices</div>
-                <div class="value" id="bannerPastDue">-</div>
-                <div class="sub">Patient follow-up needed</div>
-            </div>
-            <div class="priority-card info">
-                <div class="label">⏰ Late Invoicing</div>
-                <div class="value" id="bannerLateInvoicing">-</div>
-                <div class="sub">Invoiced 7+ days after service</div>
-            </div>
+        <div class="stat-tile">
+          <div class="stat-tile-header">📋 Claims Follow-Up<span class="tile-badge red" id="claimsFUBadge">0</span></div>
+          <div class="stat-tile-content">
+            <div class="stat-row"><span class="label">Denied — appeal/resubmit</span><span class="value red" id="fuClaimsDenied">0</span></div>
+            <div class="stat-row"><span class="label">Rejected — needs correction</span><span class="value red" id="fuClaimsRejected">0</span></div>
+            <div class="stat-row"><span class="label">Acknowledged — no movement</span><span class="value yellow" id="fuClaimsAcknowledged">0</span></div>
+            <div class="stat-row"><span class="label">90+ Days outstanding</span><span class="value orange" id="fuClaims90">0</span></div>
+            <div class="stat-row"><span class="label">Unreviewed claims</span><span class="value orange" id="fuClaimsUnreviewed">0</span></div>
+            <div class="stat-row"><span class="label">Total $ at risk</span><span class="value red" id="fuClaimsAmt">$0</span></div>
+            <div style="margin-top:16px;"><div class="stat-detail" style="margin-bottom:8px;">Top Denied Payers</div><div id="fuDeniedPayers"></div></div>
+          </div>
         </div>
-
-        <!-- MAIN TILES -->
-        <div class="stats-grid">
-
-            <!-- Daily Checklist -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    ✅ Daily Checklist
-                    <span class="tile-badge gray">data-driven</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="stat-detail">Flags based on live data — not self-reported</div>
-                    <div class="checklist-item">
-                        <span class="check-icon" id="checkDeniedIcon">⚠️</span>
-                        <span class="check-text">Denied claims needing appeal/resubmit</span>
-                        <span class="check-value red" id="checkDenied">0</span>
-                    </div>
-                    <div class="checklist-item">
-                        <span class="check-icon" id="checkOHPIcon">⚠️</span>
-                        <span class="check-text">BILL OHP tasks outstanding</span>
-                        <span class="check-value teal" id="checkOHP">0</span>
-                    </div>
-                    <div class="checklist-item">
-                        <span class="check-icon" id="checkPastDueIcon">⚠️</span>
-                        <span class="check-text">Past due patient invoices</span>
-                        <span class="check-value yellow" id="checkPastDue">0</span>
-                    </div>
-                    <div class="checklist-item">
-                        <span class="check-icon" id="checkLateIcon">⚠️</span>
-                        <span class="check-text">Invoices created 7+ days after service</span>
-                        <span class="check-value orange" id="checkLate">0</span>
-                    </div>
-                    <div class="checklist-item">
-                        <span class="check-icon" id="check90Icon">⚠️</span>
-                        <span class="check-text">Claims 90+ days outstanding</span>
-                        <span class="check-value red" id="check90">0</span>
-                    </div>
-                    <div class="checklist-item">
-                        <span class="check-icon" id="checkUnreviewedIcon">⚠️</span>
-                        <span class="check-text">Unreviewed claims</span>
-                        <span class="check-value orange" id="checkUnreviewed">0</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Claims Follow-Up -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    📋 Claims Follow-Up
-                    <span class="tile-badge red" id="claimsFUBadge">0</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="stat-row"><span class="label">Denied — appeal/resubmit</span><span class="value red" id="fuClaimsDenied">0</span></div>
-                    <div class="stat-row"><span class="label">Rejected — needs correction</span><span class="value red" id="fuClaimsRejected">0</span></div>
-                    <div class="stat-row"><span class="label">Acknowledged — no movement</span><span class="value yellow" id="fuClaimsAcknowledged">0</span></div>
-                    <div class="stat-row"><span class="label">90+ Days outstanding</span><span class="value orange" id="fuClaims90">0</span></div>
-                    <div class="stat-row"><span class="label">Unreviewed claims</span><span class="value orange" id="fuClaimsUnreviewed">0</span></div>
-                    <div class="stat-row"><span class="label">Total $ at risk</span><span class="value red" id="fuClaimsAmt">$0</span></div>
-                    <div style="margin-top:16px;">
-                        <div class="stat-detail" style="margin-bottom:8px;">Top Denied Payers</div>
-                        <div id="fuDeniedPayers"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Secondary Claims Follow-Up -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    📑 Secondary Claims Follow-Up
-                    <span class="tile-badge teal" id="secFUBadge">0</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="big-number teal" id="fuSecBillOHP">0</div>
-                    <div class="stat-detail">Line items to bill OHP secondary</div>
-                    <div class="stat-row"><span class="label">$ Recoverable from OHP</span><span class="value teal" id="fuSecRecoverable">$0</span></div>
-                    <div class="stat-row"><span class="label">Check Secondary Ins.</span><span class="value yellow" id="fuSecCheck">0</span></div>
-                    <div style="margin-top:16px;">
-                        <div class="stat-detail" style="margin-bottom:8px;">BILL OHP by Claim Status</div>
-                        <div id="fuSecStatus"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Invoicing Timeliness -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    ⚡ Invoicing Timeliness
-                    <span class="tile-badge" id="timelinessGrade" style="background:rgba(16,185,129,0.15);color:#10b981;">—</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="big-number green" id="fuInvoiced24h">0%</div>
-                    <div class="stat-detail">Invoiced within 24 hours of service</div>
-                    <div style="margin-top:8px;">
-                        <div class="metric-bar">
-                            <div class="metric-bar-label"><span>Within 24 hrs</span><span id="fuTL24" style="color:#10b981;">0%</span></div>
-                            <div class="metric-bar-track"><div class="metric-bar-fill green" id="fuTL24Bar" style="width:0%"></div></div>
-                        </div>
-                        <div class="metric-bar" style="margin-top:8px;">
-                            <div class="metric-bar-label"><span>Within 48 hrs</span><span id="fuTL48" style="color:#10b981;">0%</span></div>
-                            <div class="metric-bar-track"><div class="metric-bar-fill green" id="fuTL48Bar" style="width:0%"></div></div>
-                        </div>
-                        <div class="metric-bar" style="margin-top:8px;">
-                            <div class="metric-bar-label"><span>Within 7 days</span><span id="fuTL7d" style="color:#f59e0b;">0%</span></div>
-                            <div class="metric-bar-track"><div class="metric-bar-fill yellow" id="fuTL7dBar" style="width:0%"></div></div>
-                        </div>
-                        <div class="metric-bar" style="margin-top:8px;">
-                            <div class="metric-bar-label"><span>7+ days (LATE)</span><span id="fuTLLate" style="color:#ef4444;">0%</span></div>
-                            <div class="metric-bar-track"><div class="metric-bar-fill red" id="fuTLLateBar" style="width:0%"></div></div>
-                        </div>
-                    </div>
-                    <div style="margin-top:16px;">
-                        <div class="stat-row"><span class="label">Avg days service → invoice</span><span class="value" id="fuAvgDays">0</span></div>
-                        <div class="stat-row"><span class="label">Late invoices (7+ days)</span><span class="value red" id="fuLateCount">0</span></div>
-                        <div class="stat-row"><span class="label">Total analyzed</span><span class="value" id="fuTLTotal">0</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Invoice Follow-Up -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    📄 Invoice Follow-Up
-                    <span class="tile-badge yellow" id="invFUBadge">0</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="big-number red" id="fuInvPastDue">0</div>
-                    <div class="stat-detail">Past due invoices — patient follow-up needed</div>
-                    <div class="stat-row"><span class="label">$ Past Due</span><span class="value red" id="fuInvPastDueAmt">$0</span></div>
-                    <div class="stat-row"><span class="label">Unpaid (not yet due)</span><span class="value yellow" id="fuInvUnpaid">0</span></div>
-                    <div class="stat-row"><span class="label">$ Unpaid</span><span class="value yellow" id="fuInvUnpaidAmt">$0</span></div>
-                    <div class="stat-row"><span class="label">Total open $ owed</span><span class="value red" id="fuInvTotalOpen">$0</span></div>
-                    <div class="stat-row"><span class="label">Collection Rate</span><span class="value green" id="fuCollectionRate">0%</span></div>
-                </div>
-            </div>
-
-            <!-- Payments Follow-Up -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    💳 Payments Follow-Up
-                    <span class="tile-badge yellow" id="pmtFUBadge">0</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="stat-row"><span class="label">$0 Payments (denials/NON)</span><span class="value red" id="fuPmtZero">0</span></div>
-                    <div class="stat-row"><span class="label">Total payment records</span><span class="value" id="fuPmtTotal">0</span></div>
-                    <div class="stat-row"><span class="label">Collected (3 mo)</span><span class="value green" id="fuPmtCollected">$0</span></div>
-                    <div style="margin-top:16px;">
-                        <div class="stat-detail" style="margin-bottom:8px;">Payers with $0 Payments</div>
-                        <div id="fuZeroPayers"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Auth Follow-Up — placeholder -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    🔐 Auth Follow-Up
-                    <span class="tile-badge gray">coming soon</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div style="text-align:center;padding:40px 20px;color:#4b5563;">
-                        <div style="font-size:32px;margin-bottom:12px;">🔐</div>
-                        <p style="font-size:13px;">Auth tracking coming soon.</p>
-                        <p style="font-size:11px;margin-top:8px;">Will show: expiring auths (30/60/90 days), units authorized vs used, clients needing new auth requests.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Projects & Tasks from Notion -->
-            <div class="stat-tile">
-                <div class="stat-tile-header">
-                    🗂 Projects & Tasks
-                    <span class="tile-badge red" id="tasksBadge">0 open</span>
-                </div>
-                <div class="stat-tile-content">
-                    <div class="progress-wrap">
-                        <div class="progress-label"><span>Completion Rate</span><span id="tasksRate">0%</span></div>
-                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="tasksBar"></div></div>
-                    </div>
-                    <div class="stat-row"><span class="label">🔴 To Do</span><span class="value red" id="tasksToDo">0</span></div>
-                    <div class="stat-row"><span class="label">🔵 In Progress</span><span class="value blue" id="tasksInProgress">0</span></div>
-                    <div class="stat-row"><span class="label">🟡 Needs Review</span><span class="value yellow" id="tasksNeedsReview">0</span></div>
-                    <div class="stat-row"><span class="label">✅ Done</span><span class="value green" id="tasksDone">0</span></div>
-                    <div style="margin-top:16px;">
-                        <div class="stat-detail" style="margin-bottom:8px;">High Priority — Work These First</div>
-                        <div id="tasksHighList"></div>
-                    </div>
-                </div>
-            </div>
-
+        <div class="stat-tile">
+          <div class="stat-tile-header">📑 Secondary Claims Follow-Up<span class="tile-badge teal" id="secFUBadge">0</span></div>
+          <div class="stat-tile-content">
+            <div class="big-number teal" id="fuSecBillOHP">0</div>
+            <div class="stat-detail">Line items to bill OHP secondary</div>
+            <div class="stat-row"><span class="label">$ Recoverable from OHP</span><span class="value teal" id="fuSecRecoverable">$0</span></div>
+            <div class="stat-row"><span class="label">Check Secondary Ins.</span><span class="value yellow" id="fuSecCheck">0</span></div>
+            <div style="margin-top:16px;"><div class="stat-detail" style="margin-bottom:8px;">BILL OHP by Claim Status</div><div id="fuSecStatus"></div></div>
+          </div>
         </div>
-
-        <div class="footer">
-            Data source: In Reach Therapy Billing Google Sheet + Notion | <span id="dataDate"></span>
+        <div class="stat-tile">
+          <div class="stat-tile-header">⚡ Invoicing Timeliness<span class="tile-badge" id="timelinessGrade" style="background:rgba(16,185,129,0.15);color:#10b981;">—</span></div>
+          <div class="stat-tile-content">
+            <div class="big-number green" id="fuInvoiced24h">0%</div>
+            <div class="stat-detail">Invoiced within 24 hours of service</div>
+            <div style="margin-top:8px;">
+              <div class="metric-bar"><div class="metric-bar-label"><span>Within 24 hrs</span><span id="fuTL24" style="color:#10b981;">0%</span></div><div class="metric-bar-track"><div class="metric-bar-fill green" id="fuTL24Bar" style="width:0%"></div></div></div>
+              <div class="metric-bar" style="margin-top:8px;"><div class="metric-bar-label"><span>Within 48 hrs</span><span id="fuTL48" style="color:#10b981;">0%</span></div><div class="metric-bar-track"><div class="metric-bar-fill green" id="fuTL48Bar" style="width:0%"></div></div></div>
+              <div class="metric-bar" style="margin-top:8px;"><div class="metric-bar-label"><span>Within 7 days</span><span id="fuTL7d" style="color:#f59e0b;">0%</span></div><div class="metric-bar-track"><div class="metric-bar-fill yellow" id="fuTL7dBar" style="width:0%"></div></div></div>
+              <div class="metric-bar" style="margin-top:8px;"><div class="metric-bar-label"><span>7+ days (LATE)</span><span id="fuTLLate" style="color:#ef4444;">0%</span></div><div class="metric-bar-track"><div class="metric-bar-fill red" id="fuTLLateBar" style="width:0%"></div></div></div>
+            </div>
+            <div style="margin-top:16px;">
+              <div class="stat-row"><span class="label">Avg days service → invoice</span><span class="value" id="fuAvgDays">0</span></div>
+              <div class="stat-row"><span class="label">Late invoices (7+ days)</span><span class="value red" id="fuLateCount">0</span></div>
+              <div class="stat-row"><span class="label">Total analyzed</span><span class="value" id="fuTLTotal">0</span></div>
+            </div>
+          </div>
         </div>
-    </div><!-- end .dashboard -->
-    </div><!-- end .frame -->
+        <div class="stat-tile">
+          <div class="stat-tile-header">📄 Invoice Follow-Up<span class="tile-badge yellow" id="invFUBadge">0</span></div>
+          <div class="stat-tile-content">
+            <div class="big-number red" id="fuInvPastDue">0</div>
+            <div class="stat-detail">Past due invoices — patient follow-up needed</div>
+            <div class="stat-row"><span class="label">$ Past Due</span><span class="value red" id="fuInvPastDueAmt">$0</span></div>
+            <div class="stat-row"><span class="label">Unpaid (not yet due)</span><span class="value yellow" id="fuInvUnpaid">0</span></div>
+            <div class="stat-row"><span class="label">$ Unpaid</span><span class="value yellow" id="fuInvUnpaidAmt">$0</span></div>
+            <div class="stat-row"><span class="label">Total open $ owed</span><span class="value red" id="fuInvTotalOpen">$0</span></div>
+            <div class="stat-row"><span class="label">Collection Rate</span><span class="value green" id="fuCollectionRate">0%</span></div>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-header">💳 Payments Follow-Up<span class="tile-badge yellow" id="pmtFUBadge">0</span></div>
+          <div class="stat-tile-content">
+            <div class="stat-row"><span class="label">$0 Payments (denials/NON)</span><span class="value red" id="fuPmtZero">0</span></div>
+            <div class="stat-row"><span class="label">Total payment records</span><span class="value" id="fuPmtTotal">0</span></div>
+            <div class="stat-row"><span class="label">Collected (3 mo)</span><span class="value green" id="fuPmtCollected">$0</span></div>
+            <div style="margin-top:16px;"><div class="stat-detail" style="margin-bottom:8px;">Payers with $0 Payments</div><div id="fuZeroPayers"></div></div>
+          </div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-header">🔐 Auth Follow-Up<span class="tile-badge gray">coming soon</span></div>
+          <div class="stat-tile-content"><div style="text-align:center;padding:40px 20px;color:#4b5563;"><div style="font-size:32px;margin-bottom:12px;">🔐</div><p style="font-size:13px;">Auth tracking coming soon.</p><p style="font-size:11px;margin-top:8px;">Will show: expiring auths (30/60/90 days), units authorized vs used, clients needing new auth requests.</p></div></div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-tile-header">🗂 Projects & Tasks<span class="tile-badge red" id="tasksBadge">0 open</span></div>
+          <div class="stat-tile-content">
+            <div class="progress-wrap"><div class="progress-label"><span>Completion Rate</span><span id="tasksRate">0%</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" id="tasksBar"></div></div></div>
+            <div class="stat-row"><span class="label">🔴 To Do</span><span class="value red" id="tasksToDo">0</span></div>
+            <div class="stat-row"><span class="label">🔵 In Progress</span><span class="value blue" id="tasksInProgress">0</span></div>
+            <div class="stat-row"><span class="label">🟡 Needs Review</span><span class="value yellow" id="tasksNeedsReview">0</span></div>
+            <div class="stat-row"><span class="label">✅ Done</span><span class="value green" id="tasksDone">0</span></div>
+            <div style="margin-top:16px;"><div class="stat-detail" style="margin-bottom:8px;">High Priority — Work These First</div><div id="tasksHighList"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">Data source: In Reach Therapy Billing Google Sheet + Notion | <span id="dataDate"></span></div>
+    </div>
+  </div>
 
-    <script>
-        const SHEET_ID = '11Uf2mb73ym-9VbK42xXJIlsaWy1drIZ-LP-w0r2OZWQ';
+  <!-- ═══════════════ TAB 2: WORK QUEUE ═══════════════ -->
+  <div class="tab-content" id="tab-workqueue">
+    <div class="wq">
+      <div class="wq-header">
+        <div>
+          <h2>⚙️ Billing Work Queue</h2>
+          <p>Live from Google Sheets · Click a block then a bucket to work the queue</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span class="live-badge" id="wq-live">⟳ Loading...</span>
+          <span style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;" id="wq-updated"></span>
+          <button onclick="loadWQData()" style="padding:5px 12px;background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;">↻ Refresh</button>
+        </div>
+      </div>
+      <div class="loading-bar hidden" id="wq-loading-bar"></div>
+      <div class="wq-error" id="wq-error"></div>
 
-        const SHEET_URLS = {
-            claims:       `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Claims`,
-            payments:     `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Payments`,
-            invoices:     `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Invoices`,
-            secondary:    `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Secondary_Billing_Check`,
-            notionStatus: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Notion_Status`
-        };
+      <!-- PAYER REFERENCE -->
+      <div class="ref-panel">
+        <div class="ref-top">
+          <span class="ref-title">📞 Payer Quick Reference — Biller Lookup</span>
+          <select class="payer-select" onchange="loadPayer(this.value)">
+            <option value="careoregon">CareOregon Inc.</option>
+            <option value="bcbs">BCBS Oregon - Regence</option>
+            <option value="uhc">UnitedHealthcare (UHC)</option>
+            <option value="moda">Moda Health</option>
+            <option value="providence">Providence Health Plan</option>
+            <option value="pacificsource">PacificSource Community</option>
+            <option value="yamhill">Yamhill CCO</option>
+            <option value="ichn">InterCommunity Health Net</option>
+          </select>
+        </div>
+        <div class="ref-grid">
+          <div class="ref-item"><label>Payer Name</label><span id="r-name">CareOregon Inc.</span></div>
+          <div class="ref-item"><label>Payer ID</label><span id="r-id" class="c-blue">93975</span></div>
+          <div class="ref-item"><label>Phone #</label><span id="r-phone" class="rlink">503-416-4100</span></div>
+          <div class="ref-item"><label>Fax #</label><span id="r-fax">503-416-4180</span></div>
+          <div class="ref-item"><label>Claims Email</label><span id="r-email" class="rlink">claims@careoregon.org</span></div>
+          <div class="ref-item"><label>NPI (IRT)</label><span id="r-npi">1255946067</span></div>
+          <div class="ref-item"><label>Tax ID / EIN</label><span id="r-ein">852665970</span></div>
+          <div class="ref-item"><label>Portal</label><span id="r-portal" class="rlink">availity.com</span></div>
+        </div>
+      </div>
 
-        function parseCSV(csv) {
-            const lines=[]; let cur='',inQ=false;
-            for(let i=0;i<csv.length;i++){const c=csv[i];if(c==='"'){inQ=!inQ;cur+=c;}else if(c==='\n'&&!inQ){if(cur.trim())lines.push(cur);cur='';}else cur+=c;}
-            if(cur.trim())lines.push(cur);
-            if(lines.length===0)return[];
-            const headers=parseCSVLine(lines[0]);
-            return lines.slice(1).map(l=>{const vals=parseCSVLine(l);const row={};headers.forEach((h,i)=>row[h.trim()]=(vals[i]||'').trim().replace(/^"|"$/g,''));return row;});
-        }
-        function parseCSVLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"')inQ=!inQ;else if(c===','&&!inQ){res.push(cur);cur='';}else cur+=c;}res.push(cur);return res.map(s=>s.trim().replace(/^"|"$/g,''));}
-        async function fetchSheetData(url){const res=await fetch(url);if(!res.ok)throw new Error('Fetch failed: '+url);return parseCSV(await res.text());}
+      <!-- TOP 4 BLOCKS -->
+      <div class="wq-blocks">
+        <div class="wq-block wq-claims" onclick="selectWQBlock('claims',this)">
+          <div class="bicon">📋</div><div class="blabel">Claims</div>
+          <div class="bvalue bv-blue" id="wb-claims">—</div>
+          <div class="bsub" id="wb-claims-sub">Loading...</div>
+          <div class="bflags" id="wb-claims-flags"></div>
+        </div>
+        <div class="wq-block wq-invoices" onclick="selectWQBlock('invoices',this)">
+          <div class="bicon">📄</div><div class="blabel">Invoices</div>
+          <div class="bvalue bv-yellow" id="wb-inv">—</div>
+          <div class="bsub" id="wb-inv-sub">Loading...</div>
+          <div class="bflags" id="wb-inv-flags"></div>
+        </div>
+        <div class="wq-block wq-auths" onclick="selectWQBlock('auths',this)">
+          <div class="bicon">🔐</div><div class="blabel">Auths</div>
+          <div class="bvalue bv-green">—</div>
+          <div class="bsub">Coming soon</div>
+          <div class="bflags"><span class="chip ch-blue">Pull from IntakeQ</span></div>
+        </div>
+        <div class="wq-block wq-kpis" onclick="selectWQBlock('kpis',this)">
+          <div class="bicon">📊</div><div class="blabel">KPIs</div>
+          <div class="bvalue bv-purple" id="wb-kpi">—</div>
+          <div class="bsub" id="wb-kpi-sub">Loading...</div>
+          <div class="bflags" id="wb-kpi-flags"></div>
+        </div>
+      </div>
 
-        const fmt$=v=>'$'+(parseFloat(String(v).replace(/[,$]/g,''))||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-        const num=v=>parseFloat(String(v).replace(/[,$]/g,''))||0;
-        const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
-        const setBar=(id,pct)=>{const el=document.getElementById(id);if(el)el.style.width=Math.min(pct,100)+'%';};
-        const checkIcon=(val,threshold=0)=>val>threshold?'⚠️':'✅';
+      <!-- CLAIMS PANEL -->
+      <div class="wq-panel" id="wqp-claims">
+        <div class="buckets">
+          <div class="bucket" onclick="selectBucket('processing',this)">
+            <div class="bucket-top"><div class="bucket-name">⚙️ Processing</div><div class="bucket-count bc-orange" id="bc-processing">—</div></div>
+            <div class="bucket-rule">Acknowledged/Submitted &gt;30 days → escalate to Lead</div>
+            <span class="bucket-alert ba-orange" id="ba-processing">Loading...</span>
+          </div>
+          <div class="bucket" onclick="selectBucket('under-review',this)">
+            <div class="bucket-top"><div class="bucket-name">🔍 Under Review</div><div class="bucket-count bc-yellow" id="bc-under-review">—</div></div>
+            <div class="bucket-rule">Touch every 7 days · Max 45 days total</div>
+            <span class="bucket-alert ba-yellow" id="ba-under-review">Loading...</span>
+          </div>
+          <div class="bucket" onclick="selectBucket('awaiting-review',this)">
+            <div class="bucket-top"><div class="bucket-name">⏳ Awaiting Review</div><div class="bucket-count bc-red" id="bc-awaiting">—</div></div>
+            <div class="bucket-rule">Red flag if not touched in 7 days</div>
+            <span class="bucket-alert ba-red" id="ba-awaiting">Loading...</span>
+          </div>
+          <div class="bucket" onclick="selectBucket('secondary',this)">
+            <div class="bucket-top"><div class="bucket-name">📑 Secondary</div><div class="bucket-count bc-purple" id="bc-secondary">—</div></div>
+            <div class="bucket-rule">Denied/rejected/suspended → moves to Under Review</div>
+            <span class="bucket-alert ba-orange" id="ba-secondary">Loading...</span>
+          </div>
+        </div>
+        <div class="search-row">
+          <input class="search-input" id="claim-search" placeholder="Search claim #, client ID, payer..." oninput="renderBucket()">
+          <select class="filter-select" id="claim-filter" onchange="renderBucket()">
+            <option value="">All flags</option>
+            <option value="lead">↑ Lead only</option>
+            <option value="warn">Watch only</option>
+          </select>
+        </div>
+        <div class="table-wrap" id="claims-table">
+          <div class="th"><span>Claim #</span><span>Client ID</span><span>Days</span><span>Payer</span><span>Status</span><span>Billed</span><span>Paid</span><span>Modifier</span><span>Flag</span><span>Action</span></div>
+          <div id="claim-rows"></div>
+          <div class="pagination">
+            <span id="page-info"></span>
+            <div class="page-btns">
+              <button class="page-btn" onclick="changePage(-1)" id="btn-prev">← Prev</button>
+              <button class="page-btn" onclick="changePage(1)" id="btn-next">Next →</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        // ── Claims ───────────────────────────────────────────────────────────────
-        async function loadClaimsFU(){
-            const data=await fetchSheetData(SHEET_URLS.claims);
-            const rows=data.filter(r=>r.ClaimNumber&&r.ClaimNumber!=='ClaimNumber');
-            const denied      =rows.filter(r=>r.Status==='Denied');
-            const rejected    =rows.filter(r=>r.Status==='Rejected');
-            const acknowledged=rows.filter(r=>r.Status==='Acknowledged');
-            const aged90      =rows.filter(r=>r.AgingBucket==='90+'&&!['paid','deductible','canceled'].includes((r.Status||'').toLowerCase()));
-            const unreviewed  =rows.filter(r=>(r.ReviewStatus||'')==='NotReviewed'&&!['paid','deductible','canceled'].includes((r.Status||'').toLowerCase()));
-            const atRisk      =[...denied,...rejected].reduce((s,r)=>s+num(r.TotalBilled),0);
-            const totalFU     =denied.length+rejected.length;
+      <!-- INVOICES PANEL -->
+      <div class="wq-panel" id="wqp-invoices">
+        <div class="buckets" style="grid-template-columns:repeat(2,1fr);">
+          <div class="bucket" onclick="selectInvBucket('pastdue',this)">
+            <div class="bucket-top"><div class="bucket-name">🔴 Past Due</div><div class="bucket-count bc-red" id="bc-pastdue">—</div></div>
+            <div class="bucket-rule">Client owes balance — contact needed</div>
+            <span class="bucket-alert ba-red" id="ba-pastdue">Loading...</span>
+          </div>
+          <div class="bucket" onclick="selectInvBucket('unpaid',this)">
+            <div class="bucket-top"><div class="bucket-name">🟡 Unpaid</div><div class="bucket-count bc-yellow" id="bc-unpaid">—</div></div>
+            <div class="bucket-rule">Not yet past due — monitor</div>
+            <span class="bucket-alert ba-yellow" id="ba-unpaid">Loading...</span>
+          </div>
+        </div>
+        <div class="table-wrap active">
+          <div class="th" style="grid-template-columns:85px 70px 55px 1fr 85px 75px 75px 100px;"><span>Invoice #</span><span>Client ID</span><span>Days</span><span>Description</span><span>Status</span><span>Total</span><span>Due</span><span>Action</span></div>
+          <div id="inv-rows"><div class="empty-state">Loading invoices...</div></div>
+        </div>
+      </div>
 
-            set('bannerDenied',denied.length);
-            set('claimsFUBadge',totalFU);
-            set('fuClaimsDenied',denied.length);
-            set('fuClaimsRejected',rejected.length);
-            set('fuClaimsAcknowledged',acknowledged.length);
-            set('fuClaims90',aged90.length);
-            set('fuClaimsUnreviewed',unreviewed.length);
-            set('fuClaimsAmt',fmt$(atRisk));
-            set('checkDenied',denied.length);
-            set('check90',aged90.length);
-            set('checkUnreviewed',unreviewed.length);
-            set('checkDeniedIcon',checkIcon(denied.length));
-            set('check90Icon',checkIcon(aged90.length));
-            set('checkUnreviewedIcon',checkIcon(unreviewed.length));
+      <!-- AUTHS PANEL -->
+      <div class="wq-panel" id="wqp-auths">
+        <div class="empty-state">🔐 Auth tracking coming soon — will show expiring auths (30/60/90 days), authorized vs used sessions, and clients needing new auth requests.</div>
+      </div>
 
-            const dp={};
-            denied.forEach(r=>{const p=r.PayerName||'Unknown';dp[p]=(dp[p]||0)+1;});
-            document.getElementById('fuDeniedPayers').innerHTML=
-                Object.entries(dp).sort((a,b)=>b[1]-a[1]).slice(0,5)
-                .map(([p,c])=>`<div class="stat-row"><span class="label">${p.substring(0,26)}${p.length>26?'…':''}</span><span class="value red">${c}</span></div>`).join('')
-                ||'<p style="color:#10b981;font-size:12px;">No denied claims ✅</p>';
-        }
+      <!-- KPIs PANEL -->
+      <div class="wq-panel" id="wqp-kpis">
+        <div class="kpi-grid" id="kpi-grid"><div class="empty-state" style="grid-column:span 3">Loading KPIs...</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- end .frame -->
 
-        // ── Secondary ────────────────────────────────────────────────────────────
-        async function loadSecondaryFU(){
-            const raw=await fetchSheetData(SHEET_URLS.secondary);
-            const rows=raw.filter(r=>{const cn=String(r.ClaimNumber||'').trim();return cn&&cn!=='ClaimNumber'&&!cn.includes('SECONDARY BILLING');});
-            const billOHP =rows.filter(r=>r.Action==='BILL OHP');
-            const checkSec=rows.filter(r=>r.Action==='Check Secondary');
-            const recoverable=billOHP.reduce((s,r)=>s+num(r['$ to Recover']),0);
+<!-- NOTES MODAL -->
+<div class="overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-title">Claim / Invoice — <span id="m-id" style="color:#58a6ff;font-family:'DM Mono',monospace"></span></div>
+    <div class="modal-sub">Notes save to this session · Escalate sends to Lead queue</div>
+    <div class="modal-grid">
+      <div class="info-item"><label>Claim / Inv #</label><span id="m-claim"></span></div>
+      <div class="info-item"><label>Client ID</label><span id="m-client" style="color:#58a6ff"></span></div>
+      <div class="info-item"><label>Member ID · DOB</label><span id="m-member"></span></div>
+      <div class="info-item"><label>Payer</label><span id="m-payer"></span></div>
+      <div class="info-item"><label>Status</label><span id="m-status"></span></div>
+      <div class="info-item"><label>Modifier</label><span id="m-mod"></span></div>
+      <div class="info-item"><label>Billed</label><span id="m-billed"></span></div>
+      <div class="info-item"><label>Paid</label><span id="m-paid"></span></div>
+      <div class="info-item"><label>Days Outstanding</label><span id="m-days"></span></div>
+    </div>
+    <div class="sec-label">Note History</div>
+    <div class="notes-history" id="m-history"></div>
+    <textarea class="note-input" id="m-note" placeholder="Enter note — e.g. 'Called CareOregon 503-416-4100, claim in review, ref# 889234, follow up 3/31'"></textarea>
+    <div class="modal-actions">
+      <button class="btn-esc" onclick="escalate()">🚨 Escalate to Lead</button>
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button class="btn-save" onclick="saveNote()">Save Note</button>
+      </div>
+    </div>
+    <div class="esc-msg" id="m-esc">✅ Escalated to Lead Tasks queue</div>
+  </div>
+</div>
 
-            set('bannerOHP',billOHP.length);
-            set('bannerOHPAmt',fmt$(recoverable)+' recoverable');
-            set('secFUBadge',billOHP.length);
-            set('fuSecBillOHP',billOHP.length.toLocaleString());
-            set('fuSecRecoverable',fmt$(recoverable));
-            set('fuSecCheck',checkSec.length.toLocaleString());
-            set('checkOHP',billOHP.length);
-            set('checkOHPIcon',checkIcon(billOHP.length));
+<script>
+const SHEET_ID='11Uf2mb73ym-9VbK42xXJIlsaWy1drIZ-LP-w0r2OZWQ';
+const SHEET_URLS={
+  claims:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Claims`,
+  payments:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Payments`,
+  invoices:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Invoices`,
+  secondary:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Secondary_Billing_Check`,
+  notionStatus:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Notion_Status`,
+  lineItems:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Claims_LineItems`,
+};
 
-            const sc={};
-            billOHP.forEach(r=>{const s=r.Status||'Unknown';sc[s]=(sc[s]||0)+1;});
-            document.getElementById('fuSecStatus').innerHTML=
-                Object.entries(sc).sort((a,b)=>b[1]-a[1])
-                .map(([s,c])=>`<div class="stat-row"><span class="label">${s}</span><span class="value teal">${c}</span></div>`).join('')
-                ||'<p style="color:#4b5563">No data</p>';
-        }
+// ── TAB SWITCHING ────────────────────────────────────────────────────────────
+function switchTab(tab,btn){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if(tab==='workqueue'&&!wqLoaded)loadWQData();
+}
+let wqLoaded=false;
 
-        // ── Invoicing Timeliness ─────────────────────────────────────────────────
-        async function loadTimelinenessFU(){
-            const data=await fetchSheetData(SHEET_URLS.invoices);
-            const rows=data.filter(r=>r.Number&&r.Number!=='Number');
+// ── CSV PARSER ───────────────────────────────────────────────────────────────
+function parseCSV(csv){
+  const lines=[];let cur='',inQ=false;
+  for(let i=0;i<csv.length;i++){const c=csv[i];if(c==='"'){inQ=!inQ;cur+=c;}else if(c==='\n'&&!inQ){if(cur.trim())lines.push(cur);cur='';}else cur+=c;}
+  if(cur.trim())lines.push(cur);
+  if(!lines.length)return[];
+  const headers=parseCSVLine(lines[0]);
+  return lines.slice(1).map(l=>{const vals=parseCSVLine(l);const row={};headers.forEach((h,i)=>row[h.trim().replace(/^"|"$/g,'')]=(vals[i]||'').trim().replace(/^"|"$/g,''));return row;});
+}
+function parseCSVLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"')inQ=!inQ;else if(c===','&&!inQ){res.push(cur);cur='';}else cur+=c;}res.push(cur);return res.map(s=>s.trim().replace(/^"|"$/g,''));}
+async function fetchSheet(url){const res=await fetch(url);if(!res.ok)throw new Error('Fetch failed');return parseCSV(await res.text());}
 
-            const timeliness=rows.filter(r=>r.Date&&r.DateCreated).map(r=>{
-                const svc=new Date(r.Date);const inv=new Date(r.DateCreated);
-                if(isNaN(svc)||isNaN(inv))return null;
-                return Math.floor((inv-svc)/(1000*60*60*24));
-            }).filter(d=>d!==null&&d>=0&&d<365);
+const fmt$=v=>'$'+(parseFloat(String(v||0).replace(/[$,]/g,''))||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+const num=v=>parseFloat(String(v||0).replace(/[$,]/g,''))||0;
+const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+const setBar=(id,pct)=>{const el=document.getElementById(id);if(el)el.style.width=Math.min(pct,100)+'%';};
+const checkIcon=(val,t=0)=>val>t?'⚠️':'✅';
 
-            const unpaid =rows.filter(r=>r.Status==='Unpaid');
-            const pastDue=rows.filter(r=>r.Status==='PastDue');
-            const paid   =rows.filter(r=>r.Status==='Paid');
-            const totalInvoiced=rows.reduce((s,r)=>s+num(r.Total),0);
-            const totalPaid    =rows.reduce((s,r)=>s+num(r.TotalPaid),0);
-            const collectionRate=totalInvoiced>0?Math.round((totalPaid/totalInvoiced)*100):0;
-            const unpaidAmt =unpaid.reduce((s,r)=>s+num(r.AmountDue),0);
-            const pastDueAmt=pastDue.reduce((s,r)=>s+num(r.AmountDue),0);
+// ════════════════════════════════════════════════════════════════════════════
+// DASHBOARD FUNCTIONS (Tab 1)
+// ════════════════════════════════════════════════════════════════════════════
+async function loadClaimsFU(){
+  const data=await fetchSheet(SHEET_URLS.claims);
+  const rows=data.filter(r=>r.ClaimNumber&&r.ClaimNumber!=='ClaimNumber');
+  const active=rows.filter(r=>!['Paid','Deductible','Canceled'].includes(r.Status));
+  const denied=rows.filter(r=>r.Status==='Denied');
+  const rejected=rows.filter(r=>r.Status==='Rejected');
+  const ack=rows.filter(r=>r.Status==='Acknowledged');
+  const ag90=rows.filter(r=>r.AgingBucket==='90+');
+  const unreviewed=rows.filter(r=>r.ReviewStatus==='NotReviewed'&&!['Paid','Deductible','Canceled'].includes(r.Status));
+  const atRisk=active.reduce((s,r)=>s+num(r.TotalBilled),0);
+  set('bannerDenied',denied.length);
+  set('claimsFUBadge',denied.length+rejected.length);
+  set('fuClaimsDenied',denied.length);set('fuClaimsRejected',rejected.length);
+  set('fuClaimsAcknowledged',ack.length);set('fuClaims90',ag90.length);
+  set('fuClaimsUnreviewed',unreviewed.length);set('fuClaimsAmt',fmt$(atRisk));
+  set('checkDenied',denied.length);set('checkDeniedIcon',checkIcon(denied.length));
+  set('check90',ag90.length);set('check90Icon',checkIcon(ag90.length));
+  set('checkUnreviewed',unreviewed.length);set('checkUnreviewedIcon',checkIcon(unreviewed.length));
+  const dp={};denied.forEach(r=>{const p=r.PayerName||'Unknown';dp[p]=(dp[p]||0)+1;});
+  document.getElementById('fuDeniedPayers').innerHTML=Object.entries(dp).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([p,c])=>`<div class="stat-row"><span class="label">${p.substring(0,26)}${p.length>26?'…':''}</span><span class="value red">${c}</span></div>`).join('')||'<p style="color:#10b981;font-size:12px;">No denials ✅</p>';
+}
 
-            set('bannerPastDue',pastDue.length);
-            set('invFUBadge',(unpaid.length+pastDue.length));
-            set('fuInvPastDue',pastDue.length);
-            set('fuInvPastDueAmt',fmt$(pastDueAmt));
-            set('fuInvUnpaid',unpaid.length);
-            set('fuInvUnpaidAmt',fmt$(unpaidAmt));
-            set('fuInvTotalOpen',fmt$(unpaidAmt+pastDueAmt));
-            set('fuCollectionRate',collectionRate+'%');
-            set('checkPastDue',pastDue.length);
-            set('checkPastDueIcon',checkIcon(pastDue.length));
+async function loadSecondaryFU(){
+  const data=await fetchSheet(SHEET_URLS.secondary);
+  const rows=data.filter(r=>r.ClaimNumber&&r.ClaimNumber!=='ClaimNumber');
+  const billOHP=rows.filter(r=>(r.Action||'').trim()==='BILL OHP');
+  const checkSec=rows.filter(r=>(r.Action||'').trim()==='Check Secondary');
+  const recoverable=billOHP.reduce((s,r)=>s+num(r['$ to Recover']),0);
+  set('bannerOHP',billOHP.length);set('bannerOHPAmt',fmt$(recoverable)+' recoverable');
+  set('secFUBadge',billOHP.length);set('fuSecBillOHP',billOHP.length);
+  set('fuSecRecoverable',fmt$(recoverable));set('fuSecCheck',checkSec.length);
+  set('checkOHP',billOHP.length);set('checkOHPIcon',checkIcon(billOHP.length));
+  const sc={};billOHP.forEach(r=>{const s=r.Status||'Unknown';sc[s]=(sc[s]||0)+1;});
+  document.getElementById('fuSecStatus').innerHTML=Object.entries(sc).sort((a,b)=>b[1]-a[1]).map(([s,c])=>`<div class="stat-row"><span class="label">${s}</span><span class="value teal">${c}</span></div>`).join('')||'<p style="color:#64748b;font-size:12px;">No data</p>';
+}
 
-            if(timeliness.length>0){
-                const total=timeliness.length;
-                const w24 =timeliness.filter(d=>d<=1).length;
-                const w48 =timeliness.filter(d=>d<=2).length;
-                const w7d =timeliness.filter(d=>d<=7).length;
-                const late=timeliness.filter(d=>d>7).length;
-                const avg =Math.round(timeliness.reduce((s,d)=>s+d,0)/total);
-                const p24 =Math.round((w24/total)*100);
-                const p48 =Math.round((w48/total)*100);
-                const p7d =Math.round((w7d/total)*100);
-                const pLate=Math.round((late/total)*100);
-                const grade=p24>=90?'A':p24>=75?'B':p24>=60?'C':'D';
-                const gradeColor=p24>=90?'#10b981':p24>=75?'#f59e0b':'#ef4444';
+async function loadTimelinenessFU(){
+  const data=await fetchSheet(SHEET_URLS.invoices);
+  const rows=data.filter(r=>r.Number&&r.Number!=='Number');
+  const unpaid=rows.filter(r=>r.Status==='Unpaid');
+  const pastDue=rows.filter(r=>r.Status==='PastDue');
+  const paid=rows.filter(r=>r.Status==='Paid');
+  const totalInvoiced=rows.reduce((s,r)=>s+num(r.Total),0);
+  const totalPaid=rows.reduce((s,r)=>s+num(r.TotalPaid),0);
+  const collectionRate=totalInvoiced>0?Math.round((totalPaid/totalInvoiced)*100):0;
+  const unpaidAmt=unpaid.reduce((s,r)=>s+num(r.AmountDue),0);
+  const pastDueAmt=pastDue.reduce((s,r)=>s+num(r.AmountDue),0);
+  set('bannerPastDue',pastDue.length);
+  set('invFUBadge',(unpaid.length+pastDue.length));
+  set('fuInvPastDue',pastDue.length);set('fuInvPastDueAmt',fmt$(pastDueAmt));
+  set('fuInvUnpaid',unpaid.length);set('fuInvUnpaidAmt',fmt$(unpaidAmt));
+  set('fuInvTotalOpen',fmt$(unpaidAmt+pastDueAmt));set('fuCollectionRate',collectionRate+'%');
+  set('checkPastDue',pastDue.length);set('checkPastDueIcon',checkIcon(pastDue.length));
+  const timeliness=rows.filter(r=>r.Date&&r.DateCreated).map(r=>{const s=new Date(r.Date);const inv=new Date(r.DateCreated);if(isNaN(s)||isNaN(inv))return null;return Math.floor((inv-s)/(1000*60*60*24));}).filter(d=>d!==null&&d>=0&&d<365);
+  if(timeliness.length>0){
+    const t=timeliness.length;
+    const w24=timeliness.filter(d=>d<=1).length;const w48=timeliness.filter(d=>d<=2).length;
+    const w7d=timeliness.filter(d=>d<=7).length;const late=timeliness.filter(d=>d>7).length;
+    const avg=Math.round(timeliness.reduce((s,d)=>s+d,0)/t);
+    const p24=Math.round((w24/t)*100);const p48=Math.round((w48/t)*100);
+    const p7d=Math.round((w7d/t)*100);const pLate=Math.round((late/t)*100);
+    const grade=p24>=90?'A':p24>=75?'B':p24>=60?'C':'D';
+    const gradeColor=p24>=90?'#10b981':p24>=75?'#f59e0b':'#ef4444';
+    set('bannerLateInvoicing',late);
+    set('fuInvoiced24h',p24+'%');set('fuTL24',p24+'%');set('fuTL48',p48+'%');set('fuTL7d',p7d+'%');set('fuTLLate',pLate+'%');
+    set('fuAvgDays',avg+' days');set('fuLateCount',late);set('fuTLTotal',t+' invoices');
+    set('checkLate',late);set('checkLateIcon',checkIcon(late));
+    setBar('fuTL24Bar',p24);setBar('fuTL48Bar',p48);setBar('fuTL7dBar',p7d);setBar('fuTLLateBar',pLate);
+    const gradeEl=document.getElementById('timelinessGrade');
+    if(gradeEl){gradeEl.textContent=grade;gradeEl.style.color=gradeColor;gradeEl.style.background=gradeColor.replace(')',',0.15)').replace('rgb','rgba');}
+  }
+}
 
-                set('bannerLateInvoicing',late);
-                set('fuInvoiced24h',p24+'%');
-                set('fuTL24',p24+'%'); set('fuTL48',p48+'%'); set('fuTL7d',p7d+'%'); set('fuTLLate',pLate+'%');
-                set('fuAvgDays',avg+' days'); set('fuLateCount',late); set('fuTLTotal',total+' invoices');
-                set('checkLate',late);
-                set('checkLateIcon',checkIcon(late));
-                setBar('fuTL24Bar',p24); setBar('fuTL48Bar',p48); setBar('fuTL7dBar',p7d); setBar('fuTLLateBar',pLate);
+async function loadPaymentsFU(){
+  const data=await fetchSheet(SHEET_URLS.payments);
+  const rows=data.filter(r=>r.Amount&&r.Amount!=='Amount');
+  const cutoff=new Date();cutoff.setMonth(cutoff.getMonth()-3);
+  const recent=rows.filter(r=>{const d=new Date(r.DateCreated);return !isNaN(d)&&d>=cutoff;});
+  const zero=rows.filter(r=>num(r.Amount)===0);
+  const collected=recent.reduce((s,r)=>s+num(r.Amount),0);
+  set('pmtFUBadge',zero.length);set('fuPmtZero',zero.length);set('fuPmtTotal',rows.length);set('fuPmtCollected',fmt$(collected));
+  const zp={};zero.forEach(r=>{const p=r.PayerName||'Unknown';zp[p]=(zp[p]||0)+1;});
+  document.getElementById('fuZeroPayers').innerHTML=Object.entries(zp).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([p,c])=>`<div class="stat-row"><span class="label">${p.substring(0,26)}${p.length>26?'…':''}</span><span class="value red">${c}</span></div>`).join('')||'<p style="color:#10b981;font-size:12px;">No $0 payments ✅</p>';
+}
 
-                const gradeEl=document.getElementById('timelinessGrade');
-                if(gradeEl){gradeEl.textContent=grade;gradeEl.style.color=gradeColor;gradeEl.style.background=gradeColor.replace(')',',0.15)').replace('rgb','rgba');}
-            }
-        }
+async function loadTasksFU(){
+  try{
+    const raw=await fetchSheet(SHEET_URLS.notionStatus);
+    if(!raw.length){set('tasksBadge','—');return;}
+    const tasks=raw.filter(r=>r.ClaimId&&r.ClaimId!=='ClaimId');
+    const toDo=tasks.filter(t=>t.Status==='To Do');
+    const inProgress=tasks.filter(t=>t.Status==='In Progress');
+    const needsReview=tasks.filter(t=>t.Status==='Needs Review');
+    const done=tasks.filter(t=>t.Status==='Done');
+    const open=[...toDo,...inProgress,...needsReview];
+    const total=tasks.length;
+    const rate=total>0?Math.round((done.length/total)*100):0;
+    const highOpen=open.filter(t=>t.Priority==='High');
+    set('bannerUrgent',highOpen.length);set('tasksBadge',open.length+' open');set('tasksRate',rate+'%');
+    set('tasksToDo',toDo.length.toLocaleString());set('tasksInProgress',inProgress.length.toLocaleString());
+    set('tasksNeedsReview',needsReview.length.toLocaleString());set('tasksDone',done.length.toLocaleString());
+    const bar=document.getElementById('tasksBar');if(bar)bar.style.width=rate+'%';
+    document.getElementById('tasksHighList').innerHTML=highOpen.slice(0,8).map(t=>`<div class="task-item high"><div class="task-info"><div class="task-name">Claim #${t.ClaimId} | Client #${t.ClientId}</div><div class="task-meta">${t.Payer||'Unknown'} — ${t.TaskType||''}</div></div><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:12px;font-weight:700;color:#ef4444;font-family:monospace;">$${parseFloat(t.AtStake||0).toFixed(0)}</span><span class="badge ${t.Status==='In Progress'?'inprog':t.Status==='Needs Review'?'review':'todo'}">${t.Status}</span></div></div>`).join('')||'<p style="color:#10b981;font-size:12px;">No high priority tasks ✅</p>';
+  }catch(err){console.error('Tasks error:',err);set('tasksBadge','—');}
+}
 
-        // ── Payments ─────────────────────────────────────────────────────────────
-        async function loadPaymentsFU(){
-            const data=await fetchSheetData(SHEET_URLS.payments);
-            const rows=data.filter(r=>r.Amount&&r.Amount!=='Amount');
-            const cutoff=new Date();cutoff.setMonth(cutoff.getMonth()-3);
-            const recent=rows.filter(r=>{const d=new Date(r.DateCreated);return !isNaN(d)&&d>=cutoff;});
-            const zero=rows.filter(r=>num(r.Amount)===0);
-            const collected=recent.reduce((s,r)=>s+num(r.Amount),0);
+async function loadDashboardData(){
+  document.getElementById('loadingOverlay').classList.remove('hidden');
+  document.getElementById('errorMsg').style.display='none';
+  try{
+    await Promise.all([loadClaimsFU(),loadSecondaryFU(),loadTimelinenessFU(),loadPaymentsFU(),loadTasksFU()]);
+    const now=new Date();
+    set('lastUpdated','Updated: '+now.toLocaleTimeString());
+    set('dataDate',now.toLocaleDateString());
+    set('frameSyncTime',now.toLocaleTimeString());
+  }catch(err){
+    const msg=document.getElementById('errorMsg');msg.style.display='block';msg.textContent='Error loading data: '+err.message;
+  }
+  document.getElementById('loadingOverlay').classList.add('hidden');
+}
 
-            set('pmtFUBadge',zero.length);
-            set('fuPmtZero',zero.length);
-            set('fuPmtTotal',rows.length);
-            set('fuPmtCollected',fmt$(collected));
+// ════════════════════════════════════════════════════════════════════════════
+// WORK QUEUE FUNCTIONS (Tab 2)
+// ════════════════════════════════════════════════════════════════════════════
+const payerRef={
+  careoregon:{name:'CareOregon Inc.',id:'93975',phone:'503-416-4100',fax:'503-416-4180',email:'claims@careoregon.org',npi:'1255946067',ein:'852665970',portal:'availity.com'},
+  bcbs:{name:'BCBS Oregon - Regence',id:'PCARE',phone:'800-547-1261',fax:'800-900-4718',email:'provider@regence.com',npi:'1255946067',ein:'852665970',portal:'regence.com/providers'},
+  uhc:{name:'UnitedHealthcare (UHC)',id:'87726',phone:'877-842-3210',fax:'866-514-6345',email:'uhcprovider@uhc.com',npi:'1255946067',ein:'852665970',portal:'uhcprovider.com'},
+  moda:{name:'Moda Health',id:'MODA1',phone:'503-243-3962',fax:'503-219-3630',email:'provider@modahealth.com',npi:'1255946067',ein:'852665970',portal:'modahealth.com'},
+  providence:{name:'Providence Health Plan',id:'PHP01',phone:'503-574-7500',fax:'503-574-7506',email:'claims@providence.org',npi:'1255946067',ein:'852665970',portal:'providencehealthplan.com'},
+  pacificsource:{name:'PacificSource Community',id:'PSOC1',phone:'541-684-5582',fax:'541-686-1123',email:'provider@pacificsource.com',npi:'1255946067',ein:'852665970',portal:'pacificsource.com'},
+  yamhill:{name:'Yamhill CCO',id:'YCCO1',phone:'503-435-6500',fax:'503-435-6501',email:'claims@yamhillcco.org',npi:'1255946067',ein:'852665970',portal:'yamhillcco.org'},
+  ichn:{name:'InterCommunity Health Net',id:'INCHN',phone:'541-813-4600',fax:'541-813-4650',email:'provider@ichn.org',npi:'1255946067',ein:'852665970',portal:'ichn.org'},
+};
 
-            const zp={};
-            zero.forEach(r=>{const p=r.PayerName||'Unknown';zp[p]=(zp[p]||0)+1;});
-            document.getElementById('fuZeroPayers').innerHTML=
-                Object.entries(zp).sort((a,b)=>b[1]-a[1]).slice(0,5)
-                .map(([p,c])=>`<div class="stat-row"><span class="label">${p.substring(0,26)}${p.length>26?'…':''}</span><span class="value red">${c}</span></div>`).join('')
-                ||'<p style="color:#10b981;font-size:12px;">No $0 payments ✅</p>';
-        }
+function loadPayer(k){
+  const p=payerRef[k];if(!p)return;
+  document.getElementById('r-name').textContent=p.name;document.getElementById('r-id').textContent=p.id;
+  document.getElementById('r-phone').textContent=p.phone;document.getElementById('r-fax').textContent=p.fax;
+  document.getElementById('r-email').textContent=p.email;document.getElementById('r-npi').textContent=p.npi;
+  document.getElementById('r-ein').textContent=p.ein;document.getElementById('r-portal').textContent=p.portal;
+}
 
-        // ── Notion Tasks ─────────────────────────────────────────────────────────
-        async function loadTasksFU(){
-            try{
-                const raw=await fetchSheetData(SHEET_URLS.notionStatus);
-                if(raw.length===0){set('tasksBadge','—');return;}
-                const tasks=raw.filter(r=>r.ClaimId&&r.ClaimId!=='ClaimId');
-                const toDo       =tasks.filter(t=>t.Status==='To Do');
-                const inProgress =tasks.filter(t=>t.Status==='In Progress');
-                const needsReview=tasks.filter(t=>t.Status==='Needs Review');
-                const done       =tasks.filter(t=>t.Status==='Done');
-                const open       =[...toDo,...inProgress,...needsReview];
-                const total      =tasks.length;
-                const rate       =total>0?Math.round((done.length/total)*100):0;
-                const highOpen   =open.filter(t=>t.Priority==='High');
+let wqClaims=[],wqInvoices=[],wqSecondary=[],currentBucket=null,currentPage=0,currentBucketData=[];
+const ROWS_PER_PAGE=25;
+const sessionNotes={};let curClaim=null;
 
-                set('bannerUrgent',highOpen.length);
-                set('tasksBadge',open.length+' open');
-                set('tasksRate',rate+'%');
-                set('tasksToDo',toDo.length.toLocaleString());
-                set('tasksInProgress',inProgress.length.toLocaleString());
-                set('tasksNeedsReview',needsReview.length.toLocaleString());
-                set('tasksDone',done.length.toLocaleString());
-                const bar=document.getElementById('tasksBar');
-                if(bar)bar.style.width=rate+'%';
+async function loadWQData(){
+  document.getElementById('wq-loading-bar').classList.remove('hidden');
+  document.getElementById('wq-error').style.display='none';
+  document.getElementById('wq-live').textContent='⟳ Loading...';
+  try{
+    const [claims,invoices,secondary]=await Promise.all([
+      fetchSheet(SHEET_URLS.claims),
+      fetchSheet(SHEET_URLS.invoices),
+      fetchSheet(SHEET_URLS.secondary),
+    ]);
+    wqClaims=claims.filter(r=>r.ClaimNumber);
+    wqInvoices=invoices.filter(r=>r.Number);
+    wqSecondary=secondary.filter(r=>r.ClaimNumber&&(r.Action||'').trim()==='BILL OHP');
+    updateWQBlocks();updateBucketCounts();updateWQInvoices();updateKPIs();
+    wqLoaded=true;
+    document.getElementById('wq-live').textContent='● LIVE';
+    document.getElementById('wq-updated').textContent='Updated: '+new Date().toLocaleString('en-US',{month:'numeric',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'});
+    set('frameSyncTime',new Date().toLocaleTimeString());
+  }catch(e){
+    document.getElementById('wq-error').textContent='⚠️ Error: '+e.message+'. Make sure sheet is shared publicly.';
+    document.getElementById('wq-error').style.display='block';
+    document.getElementById('wq-live').textContent='● Error';
+  }
+  document.getElementById('wq-loading-bar').classList.add('hidden');
+}
 
-                document.getElementById('tasksHighList').innerHTML=
-                    highOpen.slice(0,8).map(t=>`
-                        <div class="task-item high">
-                            <div class="task-info">
-                                <div class="task-name">Claim #${t.ClaimId} | Client #${t.ClientId}</div>
-                                <div class="task-meta">${t.Payer||'Unknown'} — ${t.TaskType||''}</div>
-                            </div>
-                            <div style="display:flex;align-items:center;gap:6px;">
-                                <span style="font-size:12px;font-weight:700;color:#ef4444;font-family:monospace;">$${parseFloat(t.AtStake||0).toFixed(0)}</span>
-                                <span class="badge ${t.Status==='In Progress'?'inprog':t.Status==='Needs Review'?'review':'todo'}">${t.Status}</span>
-                            </div>
-                        </div>`
-                    ).join('')||'<p style="color:#10b981;font-size:12px;">No high priority tasks ✅</p>';
-            }catch(err){console.error('Tasks error:',err);set('tasksBadge','—');}
-        }
+function updateWQBlocks(){
+  const active=wqClaims.filter(r=>!['Paid','Deductible','Canceled'].includes(r.Status));
+  const outstanding=active.reduce((s,r)=>s+num(r.TotalBilled),0);
+  const denied=wqClaims.filter(r=>r.Status==='Denied');
+  const ag90=wqClaims.filter(r=>r.AgingBucket==='90+');
+  set('wb-claims',active.length.toLocaleString());
+  set('wb-claims-sub',fmt$(outstanding)+' outstanding');
+  document.getElementById('wb-claims-flags').innerHTML=`<span class="chip ch-red">${denied.length} denied</span><span class="chip ch-orange">${ag90.length} aged 90+</span>`;
+  const unpaid=wqInvoices.filter(r=>r.Status==='Unpaid');
+  const pastDue=wqInvoices.filter(r=>r.Status==='PastDue');
+  const invAmt=unpaid.reduce((s,r)=>s+num(r.AmountDue),0)+pastDue.reduce((s,r)=>s+num(r.AmountDue),0);
+  set('wb-inv',(unpaid.length+pastDue.length).toLocaleString());
+  set('wb-inv-sub',fmt$(invAmt)+' outstanding');
+  document.getElementById('wb-inv-flags').innerHTML=`<span class="chip ch-red">${pastDue.length} past due</span><span class="chip ch-yellow">${unpaid.length} unpaid</span>`;
+  const totalInv=wqInvoices.reduce((s,r)=>s+num(r.Total),0);
+  const totalPaid=wqInvoices.reduce((s,r)=>s+num(r.TotalPaid),0);
+  const collRate=totalInv>0?(totalPaid/totalInv*100).toFixed(1)+'%':'0%';
+  set('wb-kpi',collRate);set('wb-kpi-sub','Collection rate');
+  document.getElementById('wb-kpi-flags').innerHTML=`<span class="chip ch-purple">${wqSecondary.length} OHP recovery</span>`;
+}
 
-        // ── Load All ──────────────────────────────────────────────────────────────
-        async function loadAllData(){
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-            document.getElementById('errorMsg').style.display='none';
-            try{
-                await Promise.all([loadClaimsFU(),loadSecondaryFU(),loadTimelinenessFU(),loadPaymentsFU(),loadTasksFU()]);
-                set('lastUpdated','Updated: '+new Date().toLocaleTimeString());
-                set('dataDate',new Date().toLocaleDateString());
-                set('frameSyncTime', new Date().toLocaleTimeString());
-            }catch(err){
-                const msg=document.getElementById('errorMsg');
-                msg.style.display='block';
-                msg.textContent='Error loading data: '+err.message;
-            }
-            document.getElementById('loadingOverlay').classList.add('hidden');
-        }
+function updateBucketCounts(){
+  const processing=getProcessing();
+  const underReview=getUnderReview();
+  const awaiting=getAwaiting();
+  const procOver30=processing.filter(r=>num(r.DaysOutstanding)>30);
+  const urOver7=underReview.filter(r=>num(r.DaysOutstanding)>7);
+  set('bc-processing',processing.length);
+  set('ba-processing',procOver30.length>0?`⚠️ ${procOver30.length} over 30 days`:'✅ All within 30 days');
+  set('bc-under-review',underReview.length);
+  set('ba-under-review',urOver7.length>0?`⚠️ ${urOver7.length} need activity`:'✅ All active');
+  set('bc-awaiting',awaiting.length);
+  set('ba-awaiting',`🚨 ${awaiting.length} unreviewed`);
+  set('bc-secondary',wqSecondary.length);
+  const secAmt=wqSecondary.reduce((s,r)=>s+num(r['$ to Recover']),0);
+  set('ba-secondary',`⚠️ ${fmt$(secAmt)} recoverable`);
+}
 
-        loadAllData();
-    </script>
+function getProcessing(){return wqClaims.filter(r=>['Processing','Acknowledged','Submitted'].includes(r.Status));}
+function getUnderReview(){return wqClaims.filter(r=>r.Status==='Acknowledged'&&r.ReviewStatus!=='NotReviewed');}
+function getAwaiting(){return wqClaims.filter(r=>r.ReviewStatus==='NotReviewed'&&!['Paid','Deductible','Canceled'].includes(r.Status));}
+
+function selectWQBlock(type,el){
+  document.querySelectorAll('.wq-block').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.wq-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('wqp-'+type).classList.add('active');
+  document.querySelectorAll('.bucket').forEach(b=>b.classList.remove('active'));
+  const t=document.getElementById('claims-table');if(t)t.classList.remove('active');
+}
+
+function selectBucket(bucket,el){
+  document.querySelectorAll('.bucket').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  currentBucket=bucket;currentPage=0;
+  let data=[];
+  if(bucket==='processing') data=getProcessing();
+  else if(bucket==='under-review') data=getUnderReview();
+  else if(bucket==='awaiting-review') data=getAwaiting();
+  else if(bucket==='secondary') data=wqSecondary;
+  data.sort((a,b)=>num(b.DaysOutstanding||0)-num(a.DaysOutstanding||0));
+  currentBucketData=data;
+  renderBucket();
+  document.getElementById('claims-table').classList.add('active');
+}
+
+function renderBucket(){
+  const search=(document.getElementById('claim-search').value||'').toLowerCase();
+  const filter=document.getElementById('claim-filter').value;
+  let data=currentBucketData;
+  if(search) data=data.filter(r=>(r.ClaimNumber||'').toLowerCase().includes(search)||(r.ClientId||'').toLowerCase().includes(search)||(r.PayerName||'').toLowerCase().includes(search));
+  if(filter==='lead') data=data.filter(r=>getFlag(r)==='lead');
+  else if(filter==='warn') data=data.filter(r=>getFlag(r)==='warn');
+  const total=data.length;
+  const start=currentPage*ROWS_PER_PAGE;
+  const end=Math.min(start+ROWS_PER_PAGE,total);
+  const pageData=data.slice(start,end);
+  set('page-info',`Showing ${start+1}–${end} of ${total}`);
+  document.getElementById('btn-prev').disabled=currentPage===0;
+  document.getElementById('btn-next').disabled=end>=total;
+  const rowsEl=document.getElementById('claim-rows');
+  if(!pageData.length){rowsEl.innerHTML='<div class="empty-state">No items match current filter</div>';return;}
+  rowsEl.innerHTML=pageData.map(r=>{
+    const cn=r.ClaimNumber||'';const cid=r.ClientId||'';
+    const days=num(r.DaysOutstanding||0);const payer=r.PayerName||r.Payer||'';
+    const status=r.Status||'';const billed=fmt$(r.TotalBilled||0);
+    const paid=fmt$(r.TotalPaidInsurance||0);const mod=r.Modifiers||'—';
+    const flag=getFlag(r);const fc=flag==='lead'?'flagged':flag==='warn'?'warning':'ok';
+    const dc=days>30?'c-red':days>7?'c-yellow':'c-green';
+    const ft=flag==='lead'?'<span class="tag-lead">↑ Lead</span>':flag==='warn'?'<span class="tag-watch">Watch</span>':'<span class="tag-ok">OK</span>';
+    const sc=status.includes('Processing')||status.includes('Submitted')?'p-blue':status.includes('Acknowledged')?'p-yellow':status.includes('OHP')||status.includes('Secondary')?'p-purple':status.includes('Denied')||status.includes('Rejected')?'p-red':'p-blue';
+    const ps=payer.length>20?payer.substring(0,20)+'…':payer;
+    return `<div class="tr ${fc}" onclick="openModal('${cn}','${cid}','${payer}','${status}','${billed}',${days},'${paid}','${mod}','','')">
+      <span class="mono c-blue">#${cn}</span><span class="mono c-muted">#${cid}</span>
+      <span class="mono ${dc}">${days}d</span>
+      <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${payer}">${ps}</span>
+      <span><span class="pill ${sc}">${status}</span></span>
+      <span class="mono">${billed}</span><span class="mono">${paid}</span>
+      <span class="mono c-muted" style="font-size:11px">${mod}</span>
+      <span>${ft}</span>
+      <span><button class="note-btn" onclick="event.stopPropagation();openModal('${cn}','${cid}','${payer}','${status}','${billed}',${days},'${paid}','${mod}','','')">+ Note</button></span>
+    </div>`;
+  }).join('');
+}
+
+function getFlag(r){const d=num(r.DaysOutstanding||0);if(d>45)return 'lead';if(d>30)return 'lead';if(d>7)return 'warn';return 'ok';}
+
+function changePage(dir){
+  const search=(document.getElementById('claim-search').value||'').toLowerCase();
+  let data=currentBucketData;
+  if(search) data=data.filter(r=>(r.ClaimNumber||'').toLowerCase().includes(search)||(r.ClientId||'').toLowerCase().includes(search)||(r.PayerName||'').toLowerCase().includes(search));
+  const maxPage=Math.ceil(data.length/ROWS_PER_PAGE)-1;
+  currentPage=Math.max(0,Math.min(currentPage+dir,maxPage));
+  renderBucket();
+}
+
+function updateWQInvoices(){
+  const pastDue=wqInvoices.filter(r=>r.Status==='PastDue');
+  const unpaid=wqInvoices.filter(r=>r.Status==='Unpaid');
+  set('bc-pastdue',pastDue.length);set('ba-pastdue',`🚨 ${fmt$(pastDue.reduce((s,r)=>s+num(r.AmountDue),0))} overdue`);
+  set('bc-unpaid',unpaid.length);set('ba-unpaid',`⚠️ ${fmt$(unpaid.reduce((s,r)=>s+num(r.AmountDue),0))} pending`);
+  renderInvoiceRows([...pastDue,...unpaid]);
+}
+
+function selectInvBucket(type,el){
+  document.querySelectorAll('.bucket').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  const data=type==='pastdue'?wqInvoices.filter(r=>r.Status==='PastDue'):wqInvoices.filter(r=>r.Status==='Unpaid');
+  renderInvoiceRows(data);
+}
+
+function renderInvoiceRows(data){
+  const today=new Date();
+  const rowsEl=document.getElementById('inv-rows');
+  if(!data.length){rowsEl.innerHTML='<div class="empty-state">✅ No items in this queue</div>';return;}
+  rowsEl.innerHTML=data.map(r=>{
+    const n=r.Number||'';const cid=r.ClientId||'';
+    const due=r.DueDate?new Date(r.DueDate):null;
+    const days=due?Math.max(0,Math.floor((today-due)/(1000*60*60*24))):0;
+    const dc=days>30?'c-red':days>7?'c-yellow':'c-green';
+    const fc=days>30?'flagged':days>7?'warning':'ok';
+    const sc=r.Status==='PastDue'?'p-red':'p-yellow';
+    const desc=(r.Description||'Invoice').substring(0,30);
+    return `<div class="tr ${fc}" style="grid-template-columns:85px 70px 55px 1fr 85px 75px 75px 100px;" onclick="openModal('INV-${n}','${cid}','Patient Invoice','${r.Status}','${fmt$(r.Total)}',${days},'${fmt$(r.TotalPaid)}','','','')">
+      <span class="mono c-blue">${n}</span><span class="mono c-muted">#${cid}</span>
+      <span class="mono ${dc}">${days}d</span><span>${desc}</span>
+      <span><span class="pill ${sc}">${r.Status}</span></span>
+      <span class="mono">${fmt$(r.Total)}</span><span class="mono c-red">${fmt$(r.AmountDue)}</span>
+      <span><button class="note-btn" onclick="event.stopPropagation();openModal('INV-${n}','${cid}','Patient Invoice','${r.Status}','${fmt$(r.Total)}',${days},'${fmt$(r.TotalPaid)}','','','')">+ Note</button></span>
+    </div>`;
+  }).join('');
+}
+
+function updateKPIs(){
+  const active=wqClaims.filter(r=>!['Paid','Deductible','Canceled'].includes(r.Status));
+  const denied=wqClaims.filter(r=>r.Status==='Denied');
+  const ag90=wqClaims.filter(r=>r.AgingBucket==='90+');
+  const totalInv=wqInvoices.reduce((s,r)=>s+num(r.Total),0);
+  const totalPaid=wqInvoices.reduce((s,r)=>s+num(r.TotalPaid),0);
+  const collRate=totalInv>0?(totalPaid/totalInv*100).toFixed(1)+'%':'0%';
+  const denialRate=wqClaims.length>0?(denied.length/wqClaims.length*100).toFixed(1)+'%':'0%';
+  const secAmt=wqSecondary.reduce((s,r)=>s+num(r['$ to Recover']),0);
+  const outstanding=active.reduce((s,r)=>s+num(r.TotalBilled),0);
+  const pastDue=wqInvoices.filter(r=>r.Status==='PastDue');
+  document.getElementById('kpi-grid').innerHTML=`
+    <div class="kpi-card"><div class="kpi-label">Collection Rate</div><div class="kpi-value" style="color:var(--green)">${collRate}</div><div class="kpi-sub">${fmt$(totalPaid)} collected</div><span class="kpi-trend t-up">↑ Target: 90%</span></div>
+    <div class="kpi-card"><div class="kpi-label">Denial Rate</div><div class="kpi-value" style="color:var(--red)">${denialRate}</div><div class="kpi-sub">${denied.length} of ${wqClaims.length} claims</div><span class="kpi-trend t-down">↓ Target: &lt;3%</span></div>
+    <div class="kpi-card"><div class="kpi-label">Active Outstanding</div><div class="kpi-value" style="color:var(--orange)">${active.length}</div><div class="kpi-sub">${fmt$(outstanding)} at risk</div><span class="kpi-trend t-down">↓ Monitor</span></div>
+    <div class="kpi-card"><div class="kpi-label">OHP Recovery</div><div class="kpi-value" style="color:var(--purple)">${fmt$(secAmt)}</div><div class="kpi-sub">${wqSecondary.length} BILL OHP items</div><span class="kpi-trend t-down">↓ Action needed</span></div>
+    <div class="kpi-card"><div class="kpi-label">90+ Day Claims</div><div class="kpi-value" style="color:var(--red)">${ag90.length}</div><div class="kpi-sub">${fmt$(ag90.reduce((s,r)=>s+num(r.TotalBilled),0))} at risk</div><span class="kpi-trend t-down">↓ Needs attention</span></div>
+    <div class="kpi-card"><div class="kpi-label">Past Due Invoices</div><div class="kpi-value" style="color:var(--yellow)">${pastDue.length}</div><div class="kpi-sub">${fmt$(pastDue.reduce((s,r)=>s+num(r.AmountDue),0))} outstanding</div><span class="kpi-trend t-down">↓ Contact clients</span></div>`;
+}
+
+// ── MODAL ────────────────────────────────────────────────────────────────────
+function openModal(id,cid,payer,status,billed,days,paid,mod,member,dob){
+  curClaim=id;
+  set('m-id',id);set('m-claim','#'+id);set('m-client','#'+cid);
+  set('m-member',(member||'—')+' · '+(dob||'—'));
+  set('m-payer',payer);set('m-status',status);set('m-mod',mod||'—');
+  set('m-billed',billed);set('m-paid',paid||'$0');set('m-days',days+' days');
+  document.getElementById('m-note').value='';
+  document.getElementById('m-esc').style.display='none';
+  const pk=Object.keys(payerRef).find(k=>payer.toLowerCase().includes(payerRef[k].name.toLowerCase().split(' ')[0].toLowerCase()));
+  if(pk){document.querySelector('.payer-select').value=pk;loadPayer(pk);}
+  const hist=sessionNotes[id]||[];
+  const hEl=document.getElementById('m-history');
+  hEl.innerHTML=hist.length===0?'<div style="color:#64748b;font-size:12px;padding:4px 0">No notes this session</div>':hist.map((n,i)=>`<div class="note-entry${i===0?' fresh':''}"><div class="note-meta">${n.date} · ${n.user}</div>${n.text}</div>`).join('');
+  document.getElementById('modal').classList.add('active');
+}
+function closeModal(){document.getElementById('modal').classList.remove('active');}
+function saveNote(){
+  const text=document.getElementById('m-note').value.trim();if(!text)return;
+  if(!sessionNotes[curClaim])sessionNotes[curClaim]=[];
+  sessionNotes[curClaim].unshift({date:new Date().toLocaleString('en-US',{month:'numeric',day:'numeric',year:'numeric',hour:'numeric',minute:'2-digit'}),user:'You',text});
+  const hEl=document.getElementById('m-history');
+  hEl.innerHTML=sessionNotes[curClaim].map((n,i)=>`<div class="note-entry${i===0?' fresh':''}"><div class="note-meta">${n.date} · ${n.user}</div>${n.text}</div>`).join('');
+  document.getElementById('m-note').value='';
+}
+function escalate(){
+  document.getElementById('m-esc').style.display='block';
+  setTimeout(()=>{document.getElementById('m-esc').style.display='none';closeModal();},2200);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+loadDashboardData();
+</script>
 </body>
 </html>
