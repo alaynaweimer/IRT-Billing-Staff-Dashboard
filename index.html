@@ -22,49 +22,36 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .header-left p { color: #64748b; font-size: 14px; margin-top: 4px; }
-        .header-right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-
-        .btn {
-            padding: 10px 16px; background: #12121a; border: 1px solid #2d2d3d;
-            border-radius: 8px; color: #94a3b8; font-size: 13px; cursor: pointer;
-        }
+        .header-right { display: flex; gap: 12px; align-items: center; }
+        .btn { padding: 10px 16px; background: #12121a; border: 1px solid #2d2d3d; border-radius: 8px; color: #94a3b8; font-size: 13px; cursor: pointer; }
         .btn:hover { border-color: #f97316; color: #f97316; }
         .last-updated { font-size: 12px; color: #4b5563; }
 
-        /* Priority banner */
-        .priority-banner {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 12px; margin-bottom: 24px;
-        }
-        .priority-card {
-            background: #12121a; border-radius: 12px; padding: 16px;
-            border-left: 4px solid #1e1e2e;
-        }
+        .priority-banner { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+        .priority-card { background: #12121a; border-radius: 12px; padding: 16px; border-left: 4px solid #1e1e2e; }
         .priority-card.urgent { border-left-color: #ef4444; }
         .priority-card.high   { border-left-color: #f97316; }
         .priority-card.medium { border-left-color: #f59e0b; }
         .priority-card.info   { border-left-color: #3b82f6; }
+        .priority-card.teal   { border-left-color: #14b8a6; }
         .priority-card .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .priority-card .value { font-size: 26px; font-weight: 700; font-family: monospace; }
         .priority-card.urgent .value { color: #ef4444; }
         .priority-card.high   .value { color: #f97316; }
         .priority-card.medium .value { color: #f59e0b; }
         .priority-card.info   .value { color: #3b82f6; }
+        .priority-card.teal   .value { color: #14b8a6; }
         .priority-card .sub { font-size: 11px; color: #4b5563; margin-top: 4px; }
 
-        .stats-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px; margin-bottom: 24px;
-        }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-bottom: 24px; }
         .stat-tile { background: #12121a; border: 1px solid #1e1e2e; border-radius: 12px; overflow: hidden; }
-        .stat-tile-header {
-            padding: 14px 18px; border-bottom: 1px solid #1e1e2e; background: #0a0a0f;
-            font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center;
-        }
-        .tile-count { font-family: monospace; font-size: 13px; color: #ef4444; font-weight: 700; }
-        .tile-count.green  { color: #10b981; }
-        .tile-count.yellow { color: #f59e0b; }
-        .tile-count.teal   { color: #14b8a6; }
+        .stat-tile-header { padding: 14px 18px; border-bottom: 1px solid #1e1e2e; background: #0a0a0f; font-size: 14px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .tile-badge { font-size: 11px; font-weight: 700; font-family: monospace; padding: 3px 8px; border-radius: 10px; }
+        .tile-badge.red    { background: rgba(239,68,68,0.15);  color: #ef4444; }
+        .tile-badge.yellow { background: rgba(245,158,11,0.15); color: #f59e0b; }
+        .tile-badge.teal   { background: rgba(20,184,166,0.15); color: #14b8a6; }
+        .tile-badge.green  { background: rgba(16,185,129,0.15); color: #10b981; }
+        .tile-badge.gray   { background: rgba(100,116,139,0.15);color: #64748b; }
         .stat-tile-content { padding: 20px; }
 
         .big-number { font-size: 32px; font-weight: 700; font-family: monospace; margin-bottom: 4px; }
@@ -73,7 +60,6 @@
         .big-number.teal   { color: #14b8a6; } .big-number.blue   { color: #3b82f6; }
 
         .stat-detail { font-size: 13px; color: #64748b; margin-bottom: 16px; }
-
         .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #1e1e2e; }
         .stat-row:last-child { border-bottom: none; }
         .stat-row .label { font-size: 13px; color: #94a3b8; }
@@ -82,55 +68,42 @@
         .stat-row .value.yellow { color: #f59e0b; } .stat-row .value.orange { color: #f97316; }
         .stat-row .value.teal   { color: #14b8a6; } .stat-row .value.blue   { color: #3b82f6; }
 
-        .follow-up-item {
-            display: flex; justify-content: space-between; align-items: flex-start;
-            padding: 12px; background: #0a0a0f; border-radius: 8px; margin-bottom: 8px;
-            border-left: 3px solid #1e1e2e;
-        }
-        .follow-up-item.urgent { border-left-color: #ef4444; }
-        .follow-up-item.high   { border-left-color: #f97316; }
-        .follow-up-item.medium { border-left-color: #f59e0b; }
-        .follow-up-item .info  { flex: 1; }
-        .follow-up-item .info .title { font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 3px; }
-        .follow-up-item .info .detail{ font-size: 11px; color: #64748b; }
-        .follow-up-item .amount { font-size: 13px; font-weight: 700; font-family: monospace; color: #ef4444; white-space: nowrap; margin-left: 12px; }
-
-        .task-item {
-            padding: 10px 12px; background: #0a0a0f; border-radius: 8px; margin-bottom: 6px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .task-item { padding: 10px 12px; background: #0a0a0f; border-radius: 8px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid #1e1e2e; }
+        .task-item.high   { border-left-color: #ef4444; }
+        .task-item.medium { border-left-color: #f59e0b; }
         .task-item .task-info { flex: 1; }
         .task-item .task-name { font-size: 12px; color: #e2e8f0; font-weight: 500; }
         .task-item .task-meta { font-size: 11px; color: #64748b; margin-top: 2px; }
-        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-left: 8px; }
-        .badge.high    { background: rgba(239,68,68,0.15);   color: #ef4444; }
-        .badge.medium  { background: rgba(245,158,11,0.15);  color: #f59e0b; }
-        .badge.low     { background: rgba(100,116,139,0.15); color: #64748b; }
-        .badge.todo    { background: rgba(239,68,68,0.15);   color: #ef4444; }
-        .badge.inprog  { background: rgba(59,130,246,0.15);  color: #3b82f6; }
-        .badge.review  { background: rgba(245,158,11,0.15);  color: #f59e0b; }
+        .badge { display: inline-block; padding: 2px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-left: 6px; }
+        .badge.todo   { background: rgba(239,68,68,0.15);  color: #ef4444; }
+        .badge.inprog { background: rgba(59,130,246,0.15); color: #3b82f6; }
+        .badge.review { background: rgba(245,158,11,0.15); color: #f59e0b; }
 
-        .placeholder-tile {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 40px 20px; text-align: center; color: #4b5563;
-        }
-        .placeholder-tile .icon { font-size: 32px; margin-bottom: 12px; }
-        .placeholder-tile p { font-size: 13px; }
+        .metric-bar { margin: 8px 0; }
+        .metric-bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px; }
+        .metric-bar-label span:first-child { color: #94a3b8; }
+        .metric-bar-label span:last-child  { font-weight: 600; font-family: monospace; }
+        .metric-bar-track { background: #1e1e2e; border-radius: 4px; height: 6px; }
+        .metric-bar-fill  { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .metric-bar-fill.green  { background: #10b981; }
+        .metric-bar-fill.yellow { background: #f59e0b; }
+        .metric-bar-fill.red    { background: #ef4444; }
 
         .progress-wrap { margin-bottom: 16px; }
         .progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; }
         .progress-label span:first-child { font-size: 12px; color: #94a3b8; }
         .progress-label span:last-child  { font-size: 13px; font-weight: 600; color: #10b981; }
         .progress-bar-bg   { background: #1e1e2e; border-radius: 4px; height: 8px; overflow: hidden; }
-        .progress-bar-fill { height: 100%; background: linear-gradient(90deg,#10b981,#059669); width: 0%; transition: width 0.6s ease; border-radius: 4px; }
+        .progress-bar-fill { height: 100%; background: linear-gradient(90deg,#10b981,#059669); width: 0%; transition: width 0.6s; border-radius: 4px; }
+
+        .checklist-item { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1e1e2e; }
+        .checklist-item:last-child { border-bottom: none; }
+        .check-icon { font-size: 14px; margin-top: 1px; flex-shrink: 0; }
+        .check-text { font-size: 12px; color: #94a3b8; flex: 1; }
+        .check-value { font-size: 13px; font-weight: 600; font-family: monospace; white-space: nowrap; }
 
         .footer { text-align: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid #1e1e2e; color: #4b5563; font-size: 12px; }
-
-        .loading-overlay {
-            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(10,10,15,0.95); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 100;
-        }
+        .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,10,15,0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
         .loading-overlay.hidden { display: none; }
         .spinner { width: 48px; height: 48px; border: 3px solid #1e1e2e; border-top-color: #f97316; border-radius: 50%; animation: spin 1s linear infinite; }
         .loading-text { margin-top: 16px; color: #64748b; font-size: 14px; }
@@ -161,38 +134,84 @@
         <!-- PRIORITY BANNER -->
         <div class="priority-banner">
             <div class="priority-card urgent">
-                <div class="label">🚨 Needs Action Today</div>
+                <div class="label">🚨 High Priority Tasks</div>
                 <div class="value" id="bannerUrgent">-</div>
-                <div class="sub">High priority open tasks</div>
+                <div class="sub">Need action today</div>
             </div>
             <div class="priority-card high">
-                <div class="label">⏰ Denied Claims</div>
+                <div class="label">❌ Denied Claims</div>
                 <div class="value" id="bannerDenied">-</div>
-                <div class="sub">Needs follow-up</div>
+                <div class="sub">Appeal / resubmit needed</div>
             </div>
-            <div class="priority-card medium">
+            <div class="priority-card teal">
                 <div class="label">💰 OHP to Bill</div>
                 <div class="value" id="bannerOHP">-</div>
                 <div class="sub" id="bannerOHPAmt">Loading...</div>
             </div>
-            <div class="priority-card info">
+            <div class="priority-card medium">
                 <div class="label">📄 Past Due Invoices</div>
                 <div class="value" id="bannerPastDue">-</div>
                 <div class="sub">Patient follow-up needed</div>
+            </div>
+            <div class="priority-card info">
+                <div class="label">⏰ Late Invoicing</div>
+                <div class="value" id="bannerLateInvoicing">-</div>
+                <div class="sub">Invoiced 7+ days after service</div>
             </div>
         </div>
 
         <!-- MAIN TILES -->
         <div class="stats-grid">
 
+            <!-- Daily Checklist -->
+            <div class="stat-tile">
+                <div class="stat-tile-header">
+                    ✅ Daily Checklist
+                    <span class="tile-badge gray">data-driven</span>
+                </div>
+                <div class="stat-tile-content">
+                    <div class="stat-detail">Flags based on live data — not self-reported</div>
+                    <div class="checklist-item">
+                        <span class="check-icon" id="checkDeniedIcon">⚠️</span>
+                        <span class="check-text">Denied claims needing appeal/resubmit</span>
+                        <span class="check-value red" id="checkDenied">0</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-icon" id="checkOHPIcon">⚠️</span>
+                        <span class="check-text">BILL OHP tasks outstanding</span>
+                        <span class="check-value teal" id="checkOHP">0</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-icon" id="checkPastDueIcon">⚠️</span>
+                        <span class="check-text">Past due patient invoices</span>
+                        <span class="check-value yellow" id="checkPastDue">0</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-icon" id="checkLateIcon">⚠️</span>
+                        <span class="check-text">Invoices created 7+ days after service</span>
+                        <span class="check-value orange" id="checkLate">0</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-icon" id="check90Icon">⚠️</span>
+                        <span class="check-text">Claims 90+ days outstanding</span>
+                        <span class="check-value red" id="check90">0</span>
+                    </div>
+                    <div class="checklist-item">
+                        <span class="check-icon" id="checkUnreviewedIcon">⚠️</span>
+                        <span class="check-text">Unreviewed claims</span>
+                        <span class="check-value orange" id="checkUnreviewed">0</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Claims Follow-Up -->
             <div class="stat-tile">
                 <div class="stat-tile-header">
                     📋 Claims Follow-Up
-                    <span class="tile-count" id="claimsFUCount">0 items</span>
+                    <span class="tile-badge red" id="claimsFUBadge">0</span>
                 </div>
                 <div class="stat-tile-content">
-                    <div class="stat-row"><span class="label">Denied — needs appeal/resubmit</span><span class="value red" id="fuClaimsDenied">0</span></div>
+                    <div class="stat-row"><span class="label">Denied — appeal/resubmit</span><span class="value red" id="fuClaimsDenied">0</span></div>
                     <div class="stat-row"><span class="label">Rejected — needs correction</span><span class="value red" id="fuClaimsRejected">0</span></div>
                     <div class="stat-row"><span class="label">Acknowledged — no movement</span><span class="value yellow" id="fuClaimsAcknowledged">0</span></div>
                     <div class="stat-row"><span class="label">90+ Days outstanding</span><span class="value orange" id="fuClaims90">0</span></div>
@@ -209,7 +228,7 @@
             <div class="stat-tile">
                 <div class="stat-tile-header">
                     📑 Secondary Claims Follow-Up
-                    <span class="tile-count teal" id="secFUCount">0 items</span>
+                    <span class="tile-badge teal" id="secFUBadge">0</span>
                 </div>
                 <div class="stat-tile-content">
                     <div class="big-number teal" id="fuSecBillOHP">0</div>
@@ -223,19 +242,37 @@
                 </div>
             </div>
 
-            <!-- Payments Follow-Up -->
+            <!-- Invoicing Timeliness -->
             <div class="stat-tile">
                 <div class="stat-tile-header">
-                    💳 Payments Follow-Up
-                    <span class="tile-count yellow" id="pmtFUCount">0 items</span>
+                    ⚡ Invoicing Timeliness
+                    <span class="tile-badge" id="timelinessGrade" style="background:rgba(16,185,129,0.15);color:#10b981;">—</span>
                 </div>
                 <div class="stat-tile-content">
-                    <div class="stat-row"><span class="label">$0 Payments (denials/NON)</span><span class="value red" id="fuPmtZero">0</span></div>
-                    <div class="stat-row"><span class="label">Total payment records</span><span class="value" id="fuPmtTotal">0</span></div>
-                    <div class="stat-row"><span class="label">Total collected (3 mo)</span><span class="value green" id="fuPmtCollected">$0</span></div>
+                    <div class="big-number green" id="fuInvoiced24h">0%</div>
+                    <div class="stat-detail">Invoiced within 24 hours of service</div>
+                    <div style="margin-top:8px;">
+                        <div class="metric-bar">
+                            <div class="metric-bar-label"><span>Within 24 hrs</span><span id="fuTL24" style="color:#10b981;">0%</span></div>
+                            <div class="metric-bar-track"><div class="metric-bar-fill green" id="fuTL24Bar" style="width:0%"></div></div>
+                        </div>
+                        <div class="metric-bar" style="margin-top:8px;">
+                            <div class="metric-bar-label"><span>Within 48 hrs</span><span id="fuTL48" style="color:#10b981;">0%</span></div>
+                            <div class="metric-bar-track"><div class="metric-bar-fill green" id="fuTL48Bar" style="width:0%"></div></div>
+                        </div>
+                        <div class="metric-bar" style="margin-top:8px;">
+                            <div class="metric-bar-label"><span>Within 7 days</span><span id="fuTL7d" style="color:#f59e0b;">0%</span></div>
+                            <div class="metric-bar-track"><div class="metric-bar-fill yellow" id="fuTL7dBar" style="width:0%"></div></div>
+                        </div>
+                        <div class="metric-bar" style="margin-top:8px;">
+                            <div class="metric-bar-label"><span>7+ days (LATE)</span><span id="fuTLLate" style="color:#ef4444;">0%</span></div>
+                            <div class="metric-bar-track"><div class="metric-bar-fill red" id="fuTLLateBar" style="width:0%"></div></div>
+                        </div>
+                    </div>
                     <div style="margin-top:16px;">
-                        <div class="stat-detail" style="margin-bottom:8px;">Payers with $0 Payments</div>
-                        <div id="fuZeroPayers"></div>
+                        <div class="stat-row"><span class="label">Avg days service → invoice</span><span class="value" id="fuAvgDays">0</span></div>
+                        <div class="stat-row"><span class="label">Late invoices (7+ days)</span><span class="value red" id="fuLateCount">0</span></div>
+                        <div class="stat-row"><span class="label">Total analyzed</span><span class="value" id="fuTLTotal">0</span></div>
                     </div>
                 </div>
             </div>
@@ -244,15 +281,33 @@
             <div class="stat-tile">
                 <div class="stat-tile-header">
                     📄 Invoice Follow-Up
-                    <span class="tile-count yellow" id="invFUCount">0 items</span>
+                    <span class="tile-badge yellow" id="invFUBadge">0</span>
                 </div>
                 <div class="stat-tile-content">
                     <div class="big-number red" id="fuInvPastDue">0</div>
-                    <div class="stat-detail">Past due invoices needing follow-up</div>
+                    <div class="stat-detail">Past due invoices — patient follow-up needed</div>
                     <div class="stat-row"><span class="label">$ Past Due</span><span class="value red" id="fuInvPastDueAmt">$0</span></div>
                     <div class="stat-row"><span class="label">Unpaid (not yet due)</span><span class="value yellow" id="fuInvUnpaid">0</span></div>
                     <div class="stat-row"><span class="label">$ Unpaid</span><span class="value yellow" id="fuInvUnpaidAmt">$0</span></div>
                     <div class="stat-row"><span class="label">Total open $ owed</span><span class="value red" id="fuInvTotalOpen">$0</span></div>
+                    <div class="stat-row"><span class="label">Collection Rate</span><span class="value green" id="fuCollectionRate">0%</span></div>
+                </div>
+            </div>
+
+            <!-- Payments Follow-Up -->
+            <div class="stat-tile">
+                <div class="stat-tile-header">
+                    💳 Payments Follow-Up
+                    <span class="tile-badge yellow" id="pmtFUBadge">0</span>
+                </div>
+                <div class="stat-tile-content">
+                    <div class="stat-row"><span class="label">$0 Payments (denials/NON)</span><span class="value red" id="fuPmtZero">0</span></div>
+                    <div class="stat-row"><span class="label">Total payment records</span><span class="value" id="fuPmtTotal">0</span></div>
+                    <div class="stat-row"><span class="label">Collected (3 mo)</span><span class="value green" id="fuPmtCollected">$0</span></div>
+                    <div style="margin-top:16px;">
+                        <div class="stat-detail" style="margin-bottom:8px;">Payers with $0 Payments</div>
+                        <div id="fuZeroPayers"></div>
+                    </div>
                 </div>
             </div>
 
@@ -260,40 +315,35 @@
             <div class="stat-tile">
                 <div class="stat-tile-header">
                     🔐 Auth Follow-Up
-                    <span class="tile-count" style="color:#4b5563;">coming soon</span>
+                    <span class="tile-badge gray">coming soon</span>
                 </div>
                 <div class="stat-tile-content">
-                    <div class="placeholder-tile">
-                        <div class="icon">🔐</div>
-                        <p>Auth tracking coming soon.</p>
-                        <p style="margin-top:8px;font-size:11px;">Will show: expiring auths, units used vs authorized, clients needing new auth requests.</p>
+                    <div style="text-align:center;padding:40px 20px;color:#4b5563;">
+                        <div style="font-size:32px;margin-bottom:12px;">🔐</div>
+                        <p style="font-size:13px;">Auth tracking coming soon.</p>
+                        <p style="font-size:11px;margin-top:8px;">Will show: expiring auths (30/60/90 days), units authorized vs used, clients needing new auth requests.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Projects & Tasks — from Notion -->
+            <!-- Projects & Tasks from Notion -->
             <div class="stat-tile">
                 <div class="stat-tile-header">
                     🗂 Projects & Tasks
-                    <span class="tile-count" id="tasksFUCount">0 open</span>
+                    <span class="tile-badge red" id="tasksBadge">0 open</span>
                 </div>
                 <div class="stat-tile-content">
                     <div class="progress-wrap">
-                        <div class="progress-label">
-                            <span>Completion Rate</span>
-                            <span id="tasksCompletionRate">0%</span>
-                        </div>
-                        <div class="progress-bar-bg">
-                            <div class="progress-bar-fill" id="tasksProgressBar"></div>
-                        </div>
+                        <div class="progress-label"><span>Completion Rate</span><span id="tasksRate">0%</span></div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="tasksBar"></div></div>
                     </div>
                     <div class="stat-row"><span class="label">🔴 To Do</span><span class="value red" id="tasksToDo">0</span></div>
                     <div class="stat-row"><span class="label">🔵 In Progress</span><span class="value blue" id="tasksInProgress">0</span></div>
                     <div class="stat-row"><span class="label">🟡 Needs Review</span><span class="value yellow" id="tasksNeedsReview">0</span></div>
                     <div class="stat-row"><span class="label">✅ Done</span><span class="value green" id="tasksDone">0</span></div>
                     <div style="margin-top:16px;">
-                        <div class="stat-detail" style="margin-bottom:8px;">High Priority — To Do</div>
-                        <div id="tasksHighPriority"></div>
+                        <div class="stat-detail" style="margin-bottom:8px;">High Priority — Work These First</div>
+                        <div id="tasksHighList"></div>
                     </div>
                 </div>
             </div>
@@ -316,235 +366,216 @@
             notionStatus: `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Notion_Status`
         };
 
-        // ── CSV parser ────────────────────────────────────────────────────────────
         function parseCSV(csv) {
-            const lines = [];
-            let cur = '', inQ = false;
-            for (let i = 0; i < csv.length; i++) {
-                const c = csv[i];
-                if (c === '"') { inQ = !inQ; cur += c; }
-                else if (c === '\n' && !inQ) { if (cur.trim()) lines.push(cur); cur = ''; }
-                else cur += c;
-            }
-            if (cur.trim()) lines.push(cur);
-            if (lines.length === 0) return [];
-            const headers = parseCSVLine(lines[0]);
-            return lines.slice(1).map(l => {
-                const vals = parseCSVLine(l);
-                const row = {};
-                headers.forEach((h,i) => row[h.trim()] = (vals[i]||'').trim().replace(/^"|"$/g,''));
-                return row;
-            });
+            const lines=[]; let cur='',inQ=false;
+            for(let i=0;i<csv.length;i++){const c=csv[i];if(c==='"'){inQ=!inQ;cur+=c;}else if(c==='\n'&&!inQ){if(cur.trim())lines.push(cur);cur='';}else cur+=c;}
+            if(cur.trim())lines.push(cur);
+            if(lines.length===0)return[];
+            const headers=parseCSVLine(lines[0]);
+            return lines.slice(1).map(l=>{const vals=parseCSVLine(l);const row={};headers.forEach((h,i)=>row[h.trim()]=(vals[i]||'').trim().replace(/^"|"$/g,''));return row;});
         }
-        function parseCSVLine(line) {
-            const res = []; let cur = '', inQ = false;
-            for (let i = 0; i < line.length; i++) {
-                const c = line[i];
-                if (c === '"') inQ = !inQ;
-                else if (c === ',' && !inQ) { res.push(cur); cur = ''; }
-                else cur += c;
-            }
-            res.push(cur);
-            return res.map(s => s.trim().replace(/^"|"$/g,''));
-        }
-        async function fetchSheetData(url) {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error('Fetch failed: ' + url);
-            return parseCSV(await res.text());
-        }
+        function parseCSVLine(line){const res=[];let cur='',inQ=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"')inQ=!inQ;else if(c===','&&!inQ){res.push(cur);cur='';}else cur+=c;}res.push(cur);return res.map(s=>s.trim().replace(/^"|"$/g,''));}
+        async function fetchSheetData(url){const res=await fetch(url);if(!res.ok)throw new Error('Fetch failed: '+url);return parseCSV(await res.text());}
 
-        const fmt$ = val => '$' + (parseFloat(String(val).replace(/[,$]/g,''))||0)
-                            .toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
-        const num  = val => parseFloat(String(val).replace(/[,$]/g,'')) || 0;
-        const set  = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        const fmt$=v=>'$'+(parseFloat(String(v).replace(/[,$]/g,''))||0).toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});
+        const num=v=>parseFloat(String(v).replace(/[,$]/g,''))||0;
+        const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val;};
+        const setBar=(id,pct)=>{const el=document.getElementById(id);if(el)el.style.width=Math.min(pct,100)+'%';};
+        const checkIcon=(val,threshold=0)=>val>threshold?'⚠️':'✅';
 
-        // ── Claims Follow-Up ─────────────────────────────────────────────────────
-        async function loadClaimsFU() {
-            const data = await fetchSheetData(SHEET_URLS.claims);
-            const rows = data.filter(r => r.ClaimNumber && r.ClaimNumber !== 'ClaimNumber');
+        // ── Claims ───────────────────────────────────────────────────────────────
+        async function loadClaimsFU(){
+            const data=await fetchSheetData(SHEET_URLS.claims);
+            const rows=data.filter(r=>r.ClaimNumber&&r.ClaimNumber!=='ClaimNumber');
+            const denied      =rows.filter(r=>r.Status==='Denied');
+            const rejected    =rows.filter(r=>r.Status==='Rejected');
+            const acknowledged=rows.filter(r=>r.Status==='Acknowledged');
+            const aged90      =rows.filter(r=>r.AgingBucket==='90+'&&!['paid','deductible','canceled'].includes((r.Status||'').toLowerCase()));
+            const unreviewed  =rows.filter(r=>(r.ReviewStatus||'')==='NotReviewed'&&!['paid','deductible','canceled'].includes((r.Status||'').toLowerCase()));
+            const atRisk      =[...denied,...rejected].reduce((s,r)=>s+num(r.TotalBilled),0);
+            const totalFU     =denied.length+rejected.length;
 
-            const denied      = rows.filter(r => r.Status === 'Denied');
-            const rejected    = rows.filter(r => r.Status === 'Rejected');
-            const acknowledged= rows.filter(r => r.Status === 'Acknowledged');
-            const aged90      = rows.filter(r => r.AgingBucket === '90+' &&
-                                !['paid','deductible','canceled'].includes((r.Status||'').toLowerCase()));
-            const unreviewed  = rows.filter(r => (r.ReviewStatus||'') === 'NotReviewed' &&
-                                !['paid','deductible','canceled'].includes((r.Status||'').toLowerCase()));
-
-            const totalFU   = denied.length + rejected.length;
-            const atRisk    = [...denied, ...rejected].reduce((s,r) => s + num(r.TotalBilled), 0);
-
-            set('bannerDenied',      denied.length);
-            set('claimsFUCount',     totalFU + ' items');
-            set('fuClaimsDenied',    denied.length);
-            set('fuClaimsRejected',  rejected.length);
-            set('fuClaimsAcknowledged', acknowledged.length);
-            set('fuClaims90',        aged90.length);
+            set('bannerDenied',denied.length);
+            set('claimsFUBadge',totalFU);
+            set('fuClaimsDenied',denied.length);
+            set('fuClaimsRejected',rejected.length);
+            set('fuClaimsAcknowledged',acknowledged.length);
+            set('fuClaims90',aged90.length);
             set('fuClaimsUnreviewed',unreviewed.length);
-            set('fuClaimsAmt',       fmt$(atRisk));
+            set('fuClaimsAmt',fmt$(atRisk));
+            set('checkDenied',denied.length);
+            set('check90',aged90.length);
+            set('checkUnreviewed',unreviewed.length);
+            set('checkDeniedIcon',checkIcon(denied.length));
+            set('check90Icon',checkIcon(aged90.length));
+            set('checkUnreviewedIcon',checkIcon(unreviewed.length));
 
-            // Top denied payers
-            const dp = {};
-            denied.forEach(r => { const p = r.PayerName||'Unknown'; dp[p]=(dp[p]||0)+1; });
-            document.getElementById('fuDeniedPayers').innerHTML =
+            const dp={};
+            denied.forEach(r=>{const p=r.PayerName||'Unknown';dp[p]=(dp[p]||0)+1;});
+            document.getElementById('fuDeniedPayers').innerHTML=
                 Object.entries(dp).sort((a,b)=>b[1]-a[1]).slice(0,5)
-                .map(([p,c]) => `<div class="stat-row">
-                    <span class="label">${p.substring(0,28)}${p.length>28?'…':''}</span>
-                    <span class="value red">${c}</span>
-                </div>`).join('') || '<p style="color:#10b981;font-size:12px;">No denied claims ✅</p>';
+                .map(([p,c])=>`<div class="stat-row"><span class="label">${p.substring(0,26)}${p.length>26?'…':''}</span><span class="value red">${c}</span></div>`).join('')
+                ||'<p style="color:#10b981;font-size:12px;">No denied claims ✅</p>';
         }
 
-        // ── Secondary Follow-Up ──────────────────────────────────────────────────
-        async function loadSecondaryFU() {
-            const raw = await fetchSheetData(SHEET_URLS.secondary);
-            const rows = raw.filter(r => {
-                const cn = String(r.ClaimNumber||'').trim();
-                return cn && cn !== 'ClaimNumber' &&
-                       cn !== 'SECONDARY BILLING CHECK | Compares Primary Payment to DMAP Rate | Auto-refreshed';
-            });
+        // ── Secondary ────────────────────────────────────────────────────────────
+        async function loadSecondaryFU(){
+            const raw=await fetchSheetData(SHEET_URLS.secondary);
+            const rows=raw.filter(r=>{const cn=String(r.ClaimNumber||'').trim();return cn&&cn!=='ClaimNumber'&&!cn.includes('SECONDARY BILLING');});
+            const billOHP =rows.filter(r=>r.Action==='BILL OHP');
+            const checkSec=rows.filter(r=>r.Action==='Check Secondary');
+            const recoverable=billOHP.reduce((s,r)=>s+num(r['$ to Recover']),0);
 
-            const billOHP     = rows.filter(r => r.Action === 'BILL OHP');
-            const checkSec    = rows.filter(r => r.Action === 'Check Secondary');
-            const recoverable = billOHP.reduce((s,r) => s + num(r['$ to Recover']), 0);
-
-            set('bannerOHP',       billOHP.length);
-            set('bannerOHPAmt',    fmt$(recoverable) + ' recoverable');
-            set('secFUCount',      billOHP.length + ' items');
-            set('fuSecBillOHP',    billOHP.length.toLocaleString());
+            set('bannerOHP',billOHP.length);
+            set('bannerOHPAmt',fmt$(recoverable)+' recoverable');
+            set('secFUBadge',billOHP.length);
+            set('fuSecBillOHP',billOHP.length.toLocaleString());
             set('fuSecRecoverable',fmt$(recoverable));
-            set('fuSecCheck',      checkSec.length.toLocaleString());
+            set('fuSecCheck',checkSec.length.toLocaleString());
+            set('checkOHP',billOHP.length);
+            set('checkOHPIcon',checkIcon(billOHP.length));
 
-            const sc = {};
-            billOHP.forEach(r => { const s=r.Status||'Unknown'; sc[s]=(sc[s]||0)+1; });
-            document.getElementById('fuSecStatus').innerHTML =
+            const sc={};
+            billOHP.forEach(r=>{const s=r.Status||'Unknown';sc[s]=(sc[s]||0)+1;});
+            document.getElementById('fuSecStatus').innerHTML=
                 Object.entries(sc).sort((a,b)=>b[1]-a[1])
-                .map(([s,c]) => `<div class="stat-row">
-                    <span class="label">${s}</span>
-                    <span class="value teal">${c}</span>
-                </div>`).join('') || '<p style="color:#4b5563">No data</p>';
+                .map(([s,c])=>`<div class="stat-row"><span class="label">${s}</span><span class="value teal">${c}</span></div>`).join('')
+                ||'<p style="color:#4b5563">No data</p>';
         }
 
-        // ── Payments Follow-Up ───────────────────────────────────────────────────
-        async function loadPaymentsFU() {
-            const data = await fetchSheetData(SHEET_URLS.payments);
-            const rows = data.filter(r => r.Amount && r.Amount !== 'Amount');
+        // ── Invoicing Timeliness ─────────────────────────────────────────────────
+        async function loadTimelinenessFU(){
+            const data=await fetchSheetData(SHEET_URLS.invoices);
+            const rows=data.filter(r=>r.Number&&r.Number!=='Number');
 
-            const cutoff = new Date();
-            cutoff.setMonth(cutoff.getMonth() - 3);
-            const recent = rows.filter(r => { const d=new Date(r.DateCreated); return !isNaN(d) && d>=cutoff; });
+            const timeliness=rows.filter(r=>r.Date&&r.DateCreated).map(r=>{
+                const svc=new Date(r.Date);const inv=new Date(r.DateCreated);
+                if(isNaN(svc)||isNaN(inv))return null;
+                return Math.floor((inv-svc)/(1000*60*60*24));
+            }).filter(d=>d!==null&&d>=0&&d<365);
 
-            const zeroPayments = rows.filter(r => num(r.Amount) === 0);
-            const collected    = recent.reduce((s,r) => s + num(r.Amount), 0);
+            const unpaid =rows.filter(r=>r.Status==='Unpaid');
+            const pastDue=rows.filter(r=>r.Status==='PastDue');
+            const paid   =rows.filter(r=>r.Status==='Paid');
+            const totalInvoiced=rows.reduce((s,r)=>s+num(r.Total),0);
+            const totalPaid    =rows.reduce((s,r)=>s+num(r.TotalPaid),0);
+            const collectionRate=totalInvoiced>0?Math.round((totalPaid/totalInvoiced)*100):0;
+            const unpaidAmt =unpaid.reduce((s,r)=>s+num(r.AmountDue),0);
+            const pastDueAmt=pastDue.reduce((s,r)=>s+num(r.AmountDue),0);
 
-            set('pmtFUCount',      zeroPayments.length + ' items');
-            set('fuPmtZero',       zeroPayments.length);
-            set('fuPmtTotal',      rows.length);
-            set('fuPmtCollected',  fmt$(collected));
+            set('bannerPastDue',pastDue.length);
+            set('invFUBadge',(unpaid.length+pastDue.length));
+            set('fuInvPastDue',pastDue.length);
+            set('fuInvPastDueAmt',fmt$(pastDueAmt));
+            set('fuInvUnpaid',unpaid.length);
+            set('fuInvUnpaidAmt',fmt$(unpaidAmt));
+            set('fuInvTotalOpen',fmt$(unpaidAmt+pastDueAmt));
+            set('fuCollectionRate',collectionRate+'%');
+            set('checkPastDue',pastDue.length);
+            set('checkPastDueIcon',checkIcon(pastDue.length));
 
-            // Zero payment payers
-            const zp = {};
-            zeroPayments.forEach(r => { const p=r.PayerName||'Unknown'; zp[p]=(zp[p]||0)+1; });
-            document.getElementById('fuZeroPayers').innerHTML =
+            if(timeliness.length>0){
+                const total=timeliness.length;
+                const w24 =timeliness.filter(d=>d<=1).length;
+                const w48 =timeliness.filter(d=>d<=2).length;
+                const w7d =timeliness.filter(d=>d<=7).length;
+                const late=timeliness.filter(d=>d>7).length;
+                const avg =Math.round(timeliness.reduce((s,d)=>s+d,0)/total);
+                const p24 =Math.round((w24/total)*100);
+                const p48 =Math.round((w48/total)*100);
+                const p7d =Math.round((w7d/total)*100);
+                const pLate=Math.round((late/total)*100);
+                const grade=p24>=90?'A':p24>=75?'B':p24>=60?'C':'D';
+                const gradeColor=p24>=90?'#10b981':p24>=75?'#f59e0b':'#ef4444';
+
+                set('bannerLateInvoicing',late);
+                set('fuInvoiced24h',p24+'%');
+                set('fuTL24',p24+'%'); set('fuTL48',p48+'%'); set('fuTL7d',p7d+'%'); set('fuTLLate',pLate+'%');
+                set('fuAvgDays',avg+' days'); set('fuLateCount',late); set('fuTLTotal',total+' invoices');
+                set('checkLate',late);
+                set('checkLateIcon',checkIcon(late));
+                setBar('fuTL24Bar',p24); setBar('fuTL48Bar',p48); setBar('fuTL7dBar',p7d); setBar('fuTLLateBar',pLate);
+
+                const gradeEl=document.getElementById('timelinessGrade');
+                if(gradeEl){gradeEl.textContent=grade;gradeEl.style.color=gradeColor;gradeEl.style.background=gradeColor.replace(')',',0.15)').replace('rgb','rgba');}
+            }
+        }
+
+        // ── Payments ─────────────────────────────────────────────────────────────
+        async function loadPaymentsFU(){
+            const data=await fetchSheetData(SHEET_URLS.payments);
+            const rows=data.filter(r=>r.Amount&&r.Amount!=='Amount');
+            const cutoff=new Date();cutoff.setMonth(cutoff.getMonth()-3);
+            const recent=rows.filter(r=>{const d=new Date(r.DateCreated);return !isNaN(d)&&d>=cutoff;});
+            const zero=rows.filter(r=>num(r.Amount)===0);
+            const collected=recent.reduce((s,r)=>s+num(r.Amount),0);
+
+            set('pmtFUBadge',zero.length);
+            set('fuPmtZero',zero.length);
+            set('fuPmtTotal',rows.length);
+            set('fuPmtCollected',fmt$(collected));
+
+            const zp={};
+            zero.forEach(r=>{const p=r.PayerName||'Unknown';zp[p]=(zp[p]||0)+1;});
+            document.getElementById('fuZeroPayers').innerHTML=
                 Object.entries(zp).sort((a,b)=>b[1]-a[1]).slice(0,5)
-                .map(([p,c]) => `<div class="stat-row">
-                    <span class="label">${p.substring(0,28)}${p.length>28?'…':''}</span>
-                    <span class="value red">${c}</span>
-                </div>`).join('') || '<p style="color:#10b981;font-size:12px;">No $0 payments ✅</p>';
+                .map(([p,c])=>`<div class="stat-row"><span class="label">${p.substring(0,26)}${p.length>26?'…':''}</span><span class="value red">${c}</span></div>`).join('')
+                ||'<p style="color:#10b981;font-size:12px;">No $0 payments ✅</p>';
         }
 
-        // ── Invoice Follow-Up ────────────────────────────────────────────────────
-        async function loadInvoicesFU() {
-            const data = await fetchSheetData(SHEET_URLS.invoices);
-            const rows = data.filter(r => r.Number && r.Number !== 'Number');
+        // ── Notion Tasks ─────────────────────────────────────────────────────────
+        async function loadTasksFU(){
+            try{
+                const raw=await fetchSheetData(SHEET_URLS.notionStatus);
+                if(raw.length===0){set('tasksBadge','—');return;}
+                const tasks=raw.filter(r=>r.ClaimId&&r.ClaimId!=='ClaimId');
+                const toDo       =tasks.filter(t=>t.Status==='To Do');
+                const inProgress =tasks.filter(t=>t.Status==='In Progress');
+                const needsReview=tasks.filter(t=>t.Status==='Needs Review');
+                const done       =tasks.filter(t=>t.Status==='Done');
+                const open       =[...toDo,...inProgress,...needsReview];
+                const total      =tasks.length;
+                const rate       =total>0?Math.round((done.length/total)*100):0;
+                const highOpen   =open.filter(t=>t.Priority==='High');
 
-            const unpaid  = rows.filter(r => r.Status === 'Unpaid');
-            const pastDue = rows.filter(r => r.Status === 'PastDue');
+                set('bannerUrgent',highOpen.length);
+                set('tasksBadge',open.length+' open');
+                set('tasksRate',rate+'%');
+                set('tasksToDo',toDo.length.toLocaleString());
+                set('tasksInProgress',inProgress.length.toLocaleString());
+                set('tasksNeedsReview',needsReview.length.toLocaleString());
+                set('tasksDone',done.length.toLocaleString());
+                const bar=document.getElementById('tasksBar');
+                if(bar)bar.style.width=rate+'%';
 
-            const unpaidAmt  = unpaid.reduce((s,r)  => s+num(r.AmountDue), 0);
-            const pastDueAmt = pastDue.reduce((s,r) => s+num(r.AmountDue), 0);
-
-            set('bannerPastDue',    pastDue.length);
-            set('invFUCount',       (unpaid.length + pastDue.length) + ' items');
-            set('fuInvPastDue',     pastDue.length);
-            set('fuInvPastDueAmt',  fmt$(pastDueAmt));
-            set('fuInvUnpaid',      unpaid.length);
-            set('fuInvUnpaidAmt',   fmt$(unpaidAmt));
-            set('fuInvTotalOpen',   fmt$(unpaidAmt + pastDueAmt));
-        }
-
-        // ── Tasks from Notion ────────────────────────────────────────────────────
-        async function loadTasksFU() {
-            try {
-                const raw = await fetchSheetData(SHEET_URLS.notionStatus);
-                if (raw.length === 0) {
-                    set('tasksFUCount', '—');
-                    return;
-                }
-
-                const tasks = raw.filter(r => r.ClaimId && r.ClaimId !== 'ClaimId');
-                const toDo        = tasks.filter(t => t.Status === 'To Do');
-                const inProgress  = tasks.filter(t => t.Status === 'In Progress');
-                const needsReview = tasks.filter(t => t.Status === 'Needs Review');
-                const done        = tasks.filter(t => t.Status === 'Done');
-                const open        = [...toDo, ...inProgress, ...needsReview];
-                const total       = tasks.length;
-
-                const completionRate = total > 0 ? Math.round((done.length / total) * 100) : 0;
-                const highOpen       = open.filter(t => t.Priority === 'High');
-
-                // Update banner
-                set('bannerUrgent', highOpen.length);
-
-                set('tasksFUCount',       open.length + ' open');
-                set('tasksCompletionRate', completionRate + '%');
-                set('tasksToDo',          toDo.length.toLocaleString());
-                set('tasksInProgress',    inProgress.length.toLocaleString());
-                set('tasksNeedsReview',   needsReview.length.toLocaleString());
-                set('tasksDone',          done.length.toLocaleString());
-
-                const bar = document.getElementById('tasksProgressBar');
-                if (bar) bar.style.width = completionRate + '%';
-
-                // High priority To Do list
-                document.getElementById('tasksHighPriority').innerHTML =
-                    highOpen.slice(0,8).map(t => `
-                        <div class="task-item">
+                document.getElementById('tasksHighList').innerHTML=
+                    highOpen.slice(0,8).map(t=>`
+                        <div class="task-item high">
                             <div class="task-info">
                                 <div class="task-name">Claim #${t.ClaimId} | Client #${t.ClientId}</div>
-                                <div class="task-meta">${t.Payer||'Unknown payer'} — ${t.TaskType||''}</div>
+                                <div class="task-meta">${t.Payer||'Unknown'} — ${t.TaskType||''}</div>
                             </div>
                             <div style="display:flex;align-items:center;gap:6px;">
                                 <span style="font-size:12px;font-weight:700;color:#ef4444;font-family:monospace;">$${parseFloat(t.AtStake||0).toFixed(0)}</span>
                                 <span class="badge ${t.Status==='In Progress'?'inprog':t.Status==='Needs Review'?'review':'todo'}">${t.Status}</span>
                             </div>
                         </div>`
-                    ).join('') || '<p style="color:#10b981;font-size:12px;">No high priority tasks ✅</p>';
-
-            } catch (err) {
-                console.error('Tasks error:', err);
-                set('tasksFUCount', '—');
-            }
+                    ).join('')||'<p style="color:#10b981;font-size:12px;">No high priority tasks ✅</p>';
+            }catch(err){console.error('Tasks error:',err);set('tasksBadge','—');}
         }
 
         // ── Load All ──────────────────────────────────────────────────────────────
-        async function loadAllData() {
+        async function loadAllData(){
             document.getElementById('loadingOverlay').classList.remove('hidden');
-            document.getElementById('errorMsg').style.display = 'none';
-            try {
-                await Promise.all([
-                    loadClaimsFU(),
-                    loadSecondaryFU(),
-                    loadPaymentsFU(),
-                    loadInvoicesFU(),
-                    loadTasksFU()
-                ]);
-                set('lastUpdated', 'Updated: ' + new Date().toLocaleTimeString());
-                set('dataDate',    new Date().toLocaleDateString());
-            } catch (err) {
-                const msg = document.getElementById('errorMsg');
-                msg.style.display = 'block';
-                msg.textContent = 'Error loading data: ' + err.message;
-                console.error(err);
+            document.getElementById('errorMsg').style.display='none';
+            try{
+                await Promise.all([loadClaimsFU(),loadSecondaryFU(),loadTimelinenessFU(),loadPaymentsFU(),loadTasksFU()]);
+                set('lastUpdated','Updated: '+new Date().toLocaleTimeString());
+                set('dataDate',new Date().toLocaleDateString());
+            }catch(err){
+                const msg=document.getElementById('errorMsg');
+                msg.style.display='block';
+                msg.textContent='Error loading data: '+err.message;
             }
             document.getElementById('loadingOverlay').classList.add('hidden');
         }
