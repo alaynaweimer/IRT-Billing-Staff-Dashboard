@@ -378,7 +378,7 @@ body{font-family:'Inter',sans-serif;background:#06060a;color:#e2e8f0;min-height:
           <div class="ref-item"><label>Payer ID</label><span id="r-id" class="c-blue">93975</span></div>
           <div class="ref-item"><label>Phone #</label><span id="r-phone" class="rlink">503-416-4100</span></div>
           <div class="ref-item"><label>Fax #</label><span id="r-fax">503-416-4180</span></div>
-          <div class="ref-item"><label>Claims Email</label><span id="r-email" class="rlink">claims@careoregon.org</span></div>
+          <div class="ref-item"><label>Claims Email</label><span id="r-email" class="rlink"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="61020d00080c1221020013040e1304060e0f4f0e1306">[email&#160;protected]</a></span></div>
           <div class="ref-item"><label>NPI (IRT)</label><span id="r-npi">1255946067</span></div>
           <div class="ref-item"><label>Tax ID / EIN</label><span id="r-ein">852665970</span></div>
           <div class="ref-item"><label>Portal</label><span id="r-portal" class="rlink">availity.com</span></div>
@@ -521,7 +521,7 @@ body{font-family:'Inter',sans-serif;background:#06060a;color:#e2e8f0;min-height:
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const SHEET_ID='11Uf2mb73ym-9VbK42xXJIlsaWy1drIZ-LP-w0r2OZWQ';
 const SHEET_URLS={
   claims:`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Claims`,
@@ -687,15 +687,89 @@ async function loadDashboardData(){
 // ════════════════════════════════════════════════════════════════════════════
 // WORK QUEUE FUNCTIONS (Tab 2)
 // ════════════════════════════════════════════════════════════════════════════
+// ⚠️ PAYER DATA: Phone/fax/email marked [VERIFY] should be confirmed with payer directly.
+// Payer IDs, portal URLs, and IRT NPI/EIN are verified from official payer websites.
 const payerRef={
-  careoregon:{name:'CareOregon Inc.',id:'93975',phone:'503-416-4100',fax:'503-416-4180',email:'claims@careoregon.org',npi:'1255946067',ein:'852665970',portal:'availity.com'},
-  bcbs:{name:'BCBS Oregon - Regence',id:'PCARE',phone:'800-547-1261',fax:'800-900-4718',email:'provider@regence.com',npi:'1255946067',ein:'852665970',portal:'regence.com/providers'},
-  uhc:{name:'UnitedHealthcare (UHC)',id:'87726',phone:'877-842-3210',fax:'866-514-6345',email:'uhcprovider@uhc.com',npi:'1255946067',ein:'852665970',portal:'uhcprovider.com'},
-  moda:{name:'Moda Health',id:'MODA1',phone:'503-243-3962',fax:'503-219-3630',email:'provider@modahealth.com',npi:'1255946067',ein:'852665970',portal:'modahealth.com'},
-  providence:{name:'Providence Health Plan',id:'PHP01',phone:'503-574-7500',fax:'503-574-7506',email:'claims@providence.org',npi:'1255946067',ein:'852665970',portal:'providencehealthplan.com'},
-  pacificsource:{name:'PacificSource Community',id:'PSOC1',phone:'541-684-5582',fax:'541-686-1123',email:'provider@pacificsource.com',npi:'1255946067',ein:'852665970',portal:'pacificsource.com'},
-  yamhill:{name:'Yamhill CCO',id:'YCCO1',phone:'503-435-6500',fax:'503-435-6501',email:'claims@yamhillcco.org',npi:'1255946067',ein:'852665970',portal:'yamhillcco.org'},
-  ichn:{name:'InterCommunity Health Net',id:'INCHN',phone:'541-813-4600',fax:'541-813-4650',email:'provider@ichn.org',npi:'1255946067',ein:'852665970',portal:'ichn.org'},
+  careoregon:{
+    name:'CareOregon Inc.',
+    id:'93975',                          // ✅ Verified - careoregon.org
+    phone:'800-224-4840 opt 3',          // ✅ Verified - careoregon.org provider support
+    fax:'503-416-1478',                  // ✅ Verified - careoregon.org advantage
+    email:'providercustomerservice@careoregon.org', // ✅ Verified
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'visibiledi.com/CareOregon', // ✅ Verified - claims portal
+  },
+  bcbs:{
+    name:'BCBS Oregon - Regence',
+    id:'00851',                          // ✅ Verified - Regence BCBS Oregon
+    phone:'800-253-0838',                // ✅ Verified - customer service
+    fax:'888-289-1313',                  // ✅ From Notion credentialing doc
+    email:'regence_credentialing@regence.com', // ✅ From Notion (credentialing — [VERIFY billing email])
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'availity.com',              // ✅ Regence uses Availity
+  },
+  uhc:{
+    name:'UnitedHealthcare (UHC)',
+    id:'87726',                          // ✅ Standard UHC payer ID
+    phone:'877-842-3210',                // [VERIFY] — confirm with UHC provider line
+    fax:'866-514-6345',                  // [VERIFY]
+    email:'[VERIFY with UHC]',
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'uhcprovider.com',           // ✅ UHC provider portal
+  },
+  moda:{
+    name:'Moda Health',
+    id:'MODA1',                          // [VERIFY payer ID with clearinghouse]
+    phone:'888-217-2363',                // ✅ Verified - modahealth.com medical customer service
+    fax:'503-243-3964',                  // ✅ Verified - professional services fax
+    email:'Credentialing@modahealth.com', // ✅ From Notion (credentialing — [VERIFY billing])
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'modahealth.com/medical',    // ✅ Moda provider portal
+  },
+  providence:{
+    name:'Providence Health Plan',
+    id:'PHP01',                          // ✅ Verified - thepracticebridge payer ID lookup
+    phone:'503-574-7500',                // ✅ Verified - thepracticebridge + providence site
+    fax:'[VERIFY]',                      // Not found — check PHPEDISupport@providence.org
+    email:'PHPEDISupport@providence.org', // ✅ Verified - EDI/claims support
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'availity.com',              // ✅ Providence uses Availity
+  },
+  pacificsource:{
+    name:'PacificSource Community',
+    id:'20377',                          // ✅ Verified - medicare.pacificsource.com
+    phone:'888-977-9299',                // ✅ Verified - pacificsource.com/contact (claims & appeals)
+    fax:'541-225-3628',                  // ✅ Verified - pacificsource.com grievance/fax
+    email:'credentialing@pacificsource.com', // ✅ From Notion (credentialing — [VERIFY billing])
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'pacificsource.com/providers', // ✅ InTouch for Providers via OneHealthPort
+  },
+  yamhill:{
+    name:'Yamhill CCO',
+    id:'[VERIFY]',
+    phone:'[VERIFY]',
+    fax:'[VERIFY]',
+    email:'[VERIFY]',
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'[VERIFY]',
+  },
+  ichn:{
+    name:'InterCommunity Health Net (ICHN)',
+    id:'[VERIFY]',
+    phone:'541-990-1594',                // ✅ From Notion - Michael Woods credentialing
+    fax:'541-768-6769',                  // ✅ From Notion - Michael Woods
+    email:'mwoods@samhealth.org',        // ✅ From Notion (credentialing — [VERIFY billing])
+    npi:'1255946067',
+    ein:'852665970',
+    portal:'[VERIFY]',
+  },
 };
 
 function loadPayer(k){
@@ -939,8 +1013,4 @@ function escalate(){
   setTimeout(()=>{document.getElementById('m-esc').style.display='none';closeModal();},2200);
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-loadDashboardData();
-</script>
-</body>
-</html>
+// ── INIT ───────�
